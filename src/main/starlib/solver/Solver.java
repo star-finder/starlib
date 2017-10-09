@@ -1,4 +1,4 @@
-package star.solver;
+package starlib.solver;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
