@@ -5,7 +5,6 @@ import java.util.Map;
 
 import starlib.StarVisitor;
 import starlib.formula.Variable;
-import sun.reflect.FieldInfo;
 
 public abstract class PureTerm {
 	
@@ -21,16 +20,6 @@ public abstract class PureTerm {
 	}
 	
 	public void updateType(List<Variable> knownTypeVars) {
-		return;
-	}
-	
-	public void genConcreteVars(List<Variable> initVars, StringBuffer test, String objName, String clsName,
-			FieldInfo[] insFields, FieldInfo[] staFields) {
-		return;
-	}
-	
-	public void genNoConcreteVars(List<Variable> initVars, StringBuffer test, String objName, String clsName,
-			FieldInfo[] insFields, FieldInfo[] staFields) {
 		return;
 	}
 
