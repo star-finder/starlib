@@ -39,25 +39,24 @@ public class InductivePred {
 	
 	@Override
 	public String toString() {
-		String ret = "pred " + predName + "(";
+		StringBuilder ret = new StringBuilder("pred " + predName + "(");
 		
-		String ps = "";
-		for (int i = 0; i < params.length; i++) {
-			ps += params[i] + ",";
+		int length = params.length;
+		for (int i = 0; i < length - 1; i++) {
+			ret.append(params[i] + ",");
 		}
-		
-		if (ps.length() > 0) ps = ps.substring(0, ps.length() - 1);
-		ret += ps + ") == ";
-		
-		String fs = "";
-		for (int i = 0; i < formulas.length; i++) {
-			fs += formulas[i] + " || ";
+		if(length > 0) {
+			ret.append(params[length -1 ]);
 		}
+		ret.append(") == ");
 		
-		if (fs.length() > 0) fs = fs.substring(0, fs.length() - 4);
-		ret += fs;
+		length = formulas.length;
+		for (int i = 0; i < length - 1; i++) {
+			ret.append(formulas[i] + " || ");
+		}
+		if (length > 0) ret.append(formulas[length -1 ]);
 		
-		return ret;
+		return ret.toString();
 	}
 	
 	public String toS2SATString() {
