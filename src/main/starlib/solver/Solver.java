@@ -27,7 +27,7 @@ public class Solver {
 
 	private static boolean ret = false;
 	
-	private static String model = "";
+	private static StringBuilder model = new StringBuilder();
 	
 	private static Process p = null;
 	
@@ -35,7 +35,7 @@ public class Solver {
 //		System.out.println(f);
 //		System.out.println(f.getDepth());
 		
-		ret = false; model = "";
+		ret = false; model = new StringBuilder();
 		
 		int maxDepth = MAX_DEPTH;
 
@@ -129,11 +129,11 @@ public class Solver {
 
 							if (readModel) {
 								if (s.contains("cex:"))
-									model += s.substring(s.indexOf("cex:"));
+									model.append(s.substring(s.indexOf("cex:")));
 								else if (s.contains("Pure Assigment"))
-									model += ";" + s;
+									model.append(";" + s);
 								else if (!s.contains("true"))
-									model += s;
+									model.append(s);
 							}
 
 							s = br.readLine();
@@ -161,7 +161,7 @@ public class Solver {
 
 			return ret;
 		} catch (Exception e) {
-			ret = false; model = "";
+			ret = false; model = new StringBuilder();
 			if (p.isAlive()) p.destroyForcibly();
 				
 			return false;
@@ -169,7 +169,7 @@ public class Solver {
 	}
 
 	public static String getModel() {
-		return model;
+		return model.toString();
 	}
 
 	public static int getMinInt(Config c) {

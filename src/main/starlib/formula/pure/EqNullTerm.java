@@ -65,8 +65,7 @@ public class EqNullTerm extends PureTerm {
 
 	@Override
 	public void accept(StarVisitor visitor) {
-		// TODO Auto-generated method stub
-		
+		visitor.visit(this);
 	}
 
 }

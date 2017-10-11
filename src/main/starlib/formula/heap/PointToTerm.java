@@ -19,7 +19,7 @@ public class PointToTerm extends HeapTerm {
 	// variables of current PointToTerm,
 	// first var is the root node
 	// other var is the fields of pointed node
-	private Variable[] vars;
+	// private Variable[] vars;
 	
 	public PointToTerm(String type, Variable... vars) {
 		this.type = type;
@@ -28,15 +28,6 @@ public class PointToTerm extends HeapTerm {
 	
 	public String getType() {
 		return type;
-	}
-	
-	public Variable getRoot() {
-		return vars[0];
-	}
-	
-	@Override
-	public Variable[] getVars() {
-		return vars;
 	}
 	
 	@Override
@@ -95,37 +86,11 @@ public class PointToTerm extends HeapTerm {
 	
 	@Override
 	public String toString() {
-		assert vars.length > 0;
-		
-		Variable root = vars[0];
-		
-		String params = "";
-		for (int i = 1; i < vars.length; i++) {
-			params += vars[i] + ",";
-		}
-		
-		if (params.length() > 0)
-			params = params.substring(0, params.length() - 1);
-		
-		String ret = root + "->" + type + "(" + params + ")";
-		return ret;
+		return vars[0] + "->" + type + "(" + getParams() + ")";
 	}
 	
 	public String toS2SATString() {
-		assert vars.length > 0;
-		
-		Variable root = vars[0];
-		
-		String params = "";
-		for (int i = 1; i < vars.length; i++) {
-			params += vars[i] + ",";
-		}
-		
-		if (params.length() > 0)
-			params = params.substring(0, params.length() - 1);
-		
-		String ret = root + "::" + type + "<" + params + ">";
-		return ret;
+		return vars[0] + "::" + type + "<" + getParams() + ">";
 	}
 	
 	@Override

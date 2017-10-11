@@ -23,19 +23,19 @@ public class DataNode {
 	
 	@Override
 	public String toString() {
-		String ret = "";
-		ret += "data " + type + "{\n";
+		StringBuilder ret = new StringBuilder();
+		ret.append("data " + type + "{\n");
 		
 		for (int i = 0; i < fields.length; i++) {
 			String fType = fields[i].getType();
 			String fName = fields[i].getName();
 			
-			ret += fType + " " + fName + ";\n";
+			ret.append(fType + " " + fName + ";\n");
 		}
 		
-		ret += "}.";
+		ret.append("}.");
 		
-		return ret;
+		return ret.toString();
 	}
 	
 	public String toS2SATString() {
@@ -43,8 +43,8 @@ public class DataNode {
 		if (type.equals("Object"))
 			return "";
 		else {
-			String ret = "";
-			ret += "data " + type + "{\n";
+			StringBuilder ret = new StringBuilder();
+			ret.append("data " + type + "{\n");
 			
 			for (int i = 0; i < fields.length; i++) {
 				String fType = fields[i].getType();
@@ -53,12 +53,12 @@ public class DataNode {
 				if (fType.equals("boolean"))
 					fType = "int";
 				
-				ret += fType + " " + fName + ";\n";
+				ret.append(fType + " " + fName + ";\n");
 			}
 			
-			ret += "}.";
+			ret.append("}.");
 			
-			return ret;
+			return ret.toString();
 		}
 	}
 

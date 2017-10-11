@@ -16,9 +16,6 @@ public class InductiveTerm extends HeapTerm {
 	// name of predicate: sll
 	private String predName;
 	
-	// variables of current term, first variable is the root
-	private Variable[] vars;
-	
 	// contains unfolded formulas for this term
 	private Formula[] unfoldedFormulas;
 	
@@ -29,15 +26,6 @@ public class InductiveTerm extends HeapTerm {
 	
 	public String getPredName() {
 		return predName;
-	}
-	
-	public Variable getRoot() {
-		return vars[0];
-	}
-	
-	@Override
-	public Variable[] getVars() {
-		return vars;
 	}
 	
 	public Formula[] getUnfoldedFormulas() {
@@ -114,35 +102,11 @@ public class InductiveTerm extends HeapTerm {
 	
 	@Override
 	public String toString() {
-		assert vars.length > 0;
-		
-		String params = "";
-		for (int i = 0; i < vars.length; i++) {
-			params += vars[i] + ",";
-		}
-		
-		if (params.length() > 0)
-			params = params.substring(0, params.length() - 1);
-		
-		String ret = predName + "(" + params + ")";
-		return ret;
+		return predName + "(" + getParams() + ")";
 	}
 	
 	public String toS2SATString() {
-		assert vars.length > 0;
-		
-		Variable root = vars[0];
-		
-		String params = "";
-		for (int i = 1; i < vars.length; i++) {
-			params += vars[i] + ",";
-		}
-		
-		if (params.length() > 0)
-			params = params.substring(0, params.length() - 1);
-		
-		String ret = root + "::" + predName + "<" + params + ">";
-		return ret;
+		return vars[0] + "::" + predName + "<" + getParams() + ">";
 	}
 	
 }
