@@ -165,15 +165,15 @@ public class PureFormula {
 			return "true";
 		else {
 			int length = pureTerms.length;
-			String ret = "";
+			StringBuilder ret = new StringBuilder();
 			
-			for (int i = 0; i < length; i++) {
-				ret += pureTerms[i] + " & ";
+			for (int i = 0; i < length - 1; i++) {
+				ret.append(pureTerms[i] + " & ");
 			}
 			
-			ret = ret.substring(0, ret.length() - 3);
+			ret.append(pureTerms[length - 1]);
 			
-			return ret;
+			return ret.toString();
 		}
 	}
 	

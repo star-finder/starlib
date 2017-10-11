@@ -82,15 +82,14 @@ public class HeapFormula {
 			return "emp";
 		else {
 			int length = heapTerms.length;
-			String ret = "";
+			StringBuilder ret = new StringBuilder();
 			
-			for (int i = 0; i < length; i++) {
-				ret += heapTerms[i] + " * ";
+			for (int i = 0; i < length - 1; i++) {
+				ret.append(heapTerms[i] + " * ");
 			}
+			ret.append(heapTerms[length - 1]);
 			
-			ret = ret.substring(0, ret.length() - 3);
-			
-			return ret;
+			return ret.toString();
 		}
 	}
 	
@@ -99,15 +98,14 @@ public class HeapFormula {
 			return "emp";
 		else {
 			int length = heapTerms.length;
-			String ret = "";
+			StringBuilder ret = new StringBuilder();
 			
-			for (int i = 0; i < length; i++) {
-				ret += heapTerms[i].toS2SATString() + " * ";
+			for (int i = 0; i < length - 1; i++) {
+				ret.append(heapTerms[i].toS2SATString() + " * ");
 			}
+			ret.append(heapTerms[length - 1].toS2SATString());
 			
-			ret = ret.substring(0, ret.length() - 3);
-			
-			return ret;
+			return ret.toString();
 		}
 	}
 	
