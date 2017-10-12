@@ -45,7 +45,7 @@ public abstract class HeapTerm {
 			params.append(vars[i] + ",");
 		}
 		
-		if (length > 0) {
+		if (length > 1) {
 			params.append(vars[length - 1]);
 		}
 		return params.toString();
