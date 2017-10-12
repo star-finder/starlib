@@ -22,7 +22,6 @@ public class InductiveTerm extends HeapTerm {
 	public InductiveTerm(String predName, Variable... vars) {
 		this.predName = predName;
 		this.vars = vars;
-		start = INDUCTIVE;
 	}
 	
 	public String getPredName() {
@@ -103,11 +102,11 @@ public class InductiveTerm extends HeapTerm {
 	
 	@Override
 	public String toString() {
-		return predName + "(" + getParams() + ")";
+		return predName + "(" + getParams(0) + ")";
 	}
 	
 	public String toS2SATString() {
-		return vars[0] + "::" + predName + "<" + getParams() + ">";
+		return vars[0] + "::" + predName + "<" + getParams(1) + ">";
 	}
 	
 }

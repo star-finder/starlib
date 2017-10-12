@@ -24,7 +24,6 @@ public class PointToTerm extends HeapTerm {
 	public PointToTerm(String type, Variable... vars) {
 		this.type = type;
 		this.vars = vars;
-		start = POINT_TO;
 	}
 	
 	public String getType() {
@@ -87,11 +86,11 @@ public class PointToTerm extends HeapTerm {
 	
 	@Override
 	public String toString() {
-		return vars[0] + "->" + type + "(" + getParams() + ")";
+		return vars[0] + "->" + type + "(" + getParams(1) + ")";
 	}
 	
 	public String toS2SATString() {
-		return vars[0] + "::" + type + "<" + getParams() + ">";
+		return vars[0] + "::" + type + "<" + getParams(1) + ">";
 	}
 	
 	@Override

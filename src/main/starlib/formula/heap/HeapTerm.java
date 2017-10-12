@@ -11,10 +11,6 @@ public abstract class HeapTerm {
 	// variables of current term, first variable is the root
 	protected Variable[] vars;
 	
-	protected static final int INDUCTIVE = 0;
-	protected static final int POINT_TO = 1;
-	protected static int start;
-	
 	public HeapTerm substitute(Variable[] fromVars, Variable[] toVars,
 			Map<String,String> existVarSubMap) {
 		return null;
@@ -40,7 +36,7 @@ public abstract class HeapTerm {
 	
 	public void accept(StarVisitor visitor) {}
 
-	protected String getParams() {
+	protected String getParams(int start) {
 		int length = vars.length;
 		assert length > 0;
 				
