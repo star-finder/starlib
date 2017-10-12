@@ -24,6 +24,7 @@ public class PointToTerm extends HeapTerm {
 	public PointToTerm(String type, Variable... vars) {
 		this.type = type;
 		this.vars = vars;
+		start = POINT_TO;
 	}
 	
 	public String getType() {

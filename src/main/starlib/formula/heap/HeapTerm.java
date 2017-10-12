@@ -11,6 +11,10 @@ public abstract class HeapTerm {
 	// variables of current term, first variable is the root
 	protected Variable[] vars;
 	
+	protected static final int INDUCTIVE = 0;
+	protected static final int POINT_TO = 1;
+	protected static int start;
+	
 	public HeapTerm substitute(Variable[] fromVars, Variable[] toVars,
 			Map<String,String> existVarSubMap) {
 		return null;
@@ -41,11 +45,11 @@ public abstract class HeapTerm {
 		assert length > 0;
 				
 		StringBuilder params = new StringBuilder();
-		for (int i = 1; i < length - 1; i++) {
+		for (int i = start; i < length - 1; i++) {
 			params.append(vars[i] + ",");
 		}
 		
-		if (length > 1) {
+		if (length > start) {
 			params.append(vars[length - 1]);
 		}
 		return params.toString();

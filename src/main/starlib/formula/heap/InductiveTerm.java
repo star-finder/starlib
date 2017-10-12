@@ -22,6 +22,7 @@ public class InductiveTerm extends HeapTerm {
 	public InductiveTerm(String predName, Variable... vars) {
 		this.predName = predName;
 		this.vars = vars;
+		start = INDUCTIVE;
 	}
 	
 	public String getPredName() {
