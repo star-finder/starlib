@@ -56,6 +56,7 @@ public class PathFinderUtils {
 		}
 	}
 	
+	/*
 	public static void generate() {
 		List<Variable> knownTypeVars = new ArrayList<Variable>();
 		
@@ -82,4 +83,5 @@ public class PathFinderUtils {
 			knownTypeVars.add(new Variable(name, type));
 		}
 	}
+	//*/
 }
