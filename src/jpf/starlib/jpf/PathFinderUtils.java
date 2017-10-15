@@ -1,6 +1,9 @@
 package starlib.jpf;
 
+import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.vm.FieldInfo;
+import gov.nasa.jpf.vm.StackFrame;
+import gov.nasa.jpf.vm.ThreadInfo;
 import starlib.formula.Variable;
 
 public class PathFinderUtils {
@@ -35,5 +38,17 @@ public class PathFinderUtils {
 			name = name.replace(clsName + "_", clsName + ".");
 		
 		return name;
+	}
+	
+	public static void printErrorDetails(Search search) {
+		System.out.println(search.getLastError().getDetails());
+		ThreadInfo[] threads = search.getVM().getThreadList().getThreads();
+		for (ThreadInfo ti : threads) {
+			for (StackFrame frame : ti) {
+				if (!frame.isDirectCallFrame()) {
+					System.out.println("\t" + frame.getStackTraceInfo() + "\n");
+				}
+			}
+		}
 	}
 }
