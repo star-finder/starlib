@@ -1,4 +1,4 @@
-package starlib.jpf;
+package starlib.jpf.testsuites;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import starlib.formula.heap.HeapTerm;
 import starlib.formula.heap.PointToTerm;
 import starlib.formula.pure.ComparisonTerm;
 import starlib.formula.pure.EqNullTerm;
+import starlib.jpf.PathFinderUtils;
 
 public class ConcreteVisitor extends PathFinderVisitor {
 

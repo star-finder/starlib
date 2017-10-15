@@ -1,9 +1,10 @@
-package starlib.jpf;
+package starlib.jpf.testsuites;
 
 import starlib.formula.Variable;
 import starlib.formula.pure.EqTerm;
 import starlib.formula.pure.NEqNullTerm;
 import starlib.formula.pure.NEqTerm;
+import starlib.jpf.PathFinderUtils;
 
 public class NoConcreteVisitor extends PathFinderVisitor {
 
