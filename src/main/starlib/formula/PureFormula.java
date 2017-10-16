@@ -1,6 +1,7 @@
 package starlib.formula;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -110,7 +111,7 @@ public class PureFormula {
 		}
 	}
 	
-	public void updateType(List<Variable> knownTypeVars) {
+	public void updateType(HashMap<String,String> knownTypeVars) {
 		int oldLength = knownTypeVars.size();
 		
 		while (true) {

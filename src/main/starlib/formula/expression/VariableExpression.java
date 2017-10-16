@@ -1,6 +1,7 @@
 package starlib.formula.expression;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,12 +55,11 @@ public class VariableExpression extends Expression {
 	}
 	
 	@Override
-	public void updateType(List<Variable> knownTypeVars) {
-		for (Variable v : knownTypeVars) {
-			if (v.equals(var)) {
-				var.setType(v.getType());
-				break;
-			}
+	public void updateType(HashMap<String, String> knownTypeVars) {
+		//TODO: Refactor, since this is cloned from EqNullTerm
+		String type = knownTypeVars.get(var.getName());
+		if(type != null) {
+			var.setType(type);
 		}
 	}
 

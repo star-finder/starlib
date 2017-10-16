@@ -1,6 +1,6 @@
 package starlib.formula.pure;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import starlib.StarVisitor;
@@ -46,7 +46,7 @@ public class ComparisonTerm extends PureTerm {
 	}
 	
 	@Override
-	public void updateType(List<Variable> knownTypeVars) {
+	public void updateType(HashMap<String, String> knownTypeVars) {
 		exp1.updateType(knownTypeVars);
 		exp2.updateType(knownTypeVars);
 	}

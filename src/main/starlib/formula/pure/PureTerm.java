@@ -1,6 +1,6 @@
 package starlib.formula.pure;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import starlib.StarVisitor;
@@ -19,7 +19,7 @@ public abstract class PureTerm {
 		return this;
 	}
 	
-	public void updateType(List<Variable> knownTypeVars) {
+	public void updateType(HashMap<String, String> knownTypeVars) {
 		return;
 	}
 

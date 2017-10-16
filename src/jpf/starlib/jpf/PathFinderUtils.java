@@ -1,7 +1,6 @@
 package starlib.jpf;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.vm.ClassInfo;
@@ -63,14 +62,14 @@ public class PathFinderUtils {
 		LocalVarInfo[] args = mi.getArgumentLocalVars();
 		FieldInfo[] insFields = ci.getInstanceFields();
 		FieldInfo[] staFields = ci.getDeclaredStaticFields();
-		List<Variable> knownTypeVars = new ArrayList<Variable>();
+		HashMap<String, String> knownTypeVars = new HashMap<String, String>();
 		
 		for (LocalVarInfo arg : args) {
 			if (!arg.getName().equals("this")) {
 				String name = arg.getName();
 				String type = standardizeType(arg.getType());
 				
-				knownTypeVars.add(new Variable(name, type));
+				knownTypeVars.put(name, type);
 			}
 		}
 		
@@ -78,14 +77,14 @@ public class PathFinderUtils {
 			String name = "this_" + field.getName();
 			String type = standardizeType(field.getType());
 				
-			knownTypeVars.add(new Variable(name, type));
+			knownTypeVars.put(name, type);
 		}
 		
 		for (FieldInfo field : staFields) {
 			String name = clsName + "_" + field.getName();
 			String type = standardizeType(field.getType());
 				
-			knownTypeVars.add(new Variable(name, type));
+			knownTypeVars.put(name, type);
 		}
 	}
 	

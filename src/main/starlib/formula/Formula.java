@@ -257,7 +257,7 @@ public class Formula {
 		return -1;
 	}
 	
-	public void updateType(List<Variable> knownTypeVars) {
+	public void updateType(HashMap<String,String> knownTypeVars) {
 		heapFormula.updateType(knownTypeVars);
 		pureFormula.updateType(knownTypeVars);
 	}

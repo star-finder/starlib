@@ -1,6 +1,6 @@
 package starlib.formula.heap;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import starlib.StarVisitor;
@@ -68,7 +68,7 @@ public class PointToTerm extends HeapTerm {
 //	}
 	
 	@Override
-	public void updateType(List<Variable> knownTypeVars) {
+	public void updateType(HashMap<String, String> knownTypeVars) {
 		DataNode dn = DataNodeMap.find(type);
 		Variable[] fields = dn.getFields();
 		
@@ -78,9 +78,9 @@ public class PointToTerm extends HeapTerm {
 			} else {
 				vars[i].setType(fields[i - 1].getType());
 			}
-			
-			if (!knownTypeVars.contains(vars[i]))
-				knownTypeVars.add(vars[i]);
+			String name = vars[i].getName();
+			if (!knownTypeVars.containsKey(name));
+				knownTypeVars.put(name, vars[i].getType());
 		}
 	}
 	

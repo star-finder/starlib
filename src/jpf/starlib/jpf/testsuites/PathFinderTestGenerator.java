@@ -1,7 +1,8 @@
 package starlib.jpf.testsuites;
 
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map.Entry;
 
 import gov.nasa.jpf.vm.FieldInfo;
 import starlib.formula.Formula;
@@ -12,7 +13,7 @@ import starlib.jpf.PathFinderUtils;
 
 public class PathFinderTestGenerator extends PathFinderVisitor {
 
-	public PathFinderTestGenerator(List<Variable> knownTypeVars, HashSet<Variable> initVars, StringBuffer test,
+	public PathFinderTestGenerator(HashMap<String,String> knownTypeVars, HashSet<Variable> initVars, StringBuffer test,
 			String objName, String clsName, FieldInfo[] insFields, FieldInfo[] staFields) {
 		super(knownTypeVars, initVars, test, objName, clsName, insFields, staFields);
 	}
@@ -39,9 +40,11 @@ public class PathFinderTestGenerator extends PathFinderVisitor {
 		if (knownTypeVars.size() == initVars.size())
 			return;
 		
-		for (Variable var : knownTypeVars) {
-			String name = var.getName();
-			String type = var.getType();
+		// for (Variable var : knownTypeVars) {
+		for(Entry<String, String> entry : knownTypeVars.entrySet()) {
+			String name = entry.getKey(); // name is key, type is value
+			String type = entry.getValue();
+			Variable var = new Variable(name,type);
 			
 			if (name.startsWith("Anon_")) continue;
 				

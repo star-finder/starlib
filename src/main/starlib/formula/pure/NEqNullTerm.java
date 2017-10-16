@@ -1,6 +1,6 @@
 package starlib.formula.pure;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import starlib.StarVisitor;
@@ -54,12 +54,11 @@ public class NEqNullTerm extends PureTerm {
 //	}
 	
 	@Override
-	public void updateType(List<Variable> knownTypeVars) {
-		for (Variable v : knownTypeVars) {
-			if (v.equals(var)) {
-				var.setType(v.getType());
-				break;
-			}
+	public void updateType(HashMap<String, String> knownTypeVars) {
+		//TODO: Refactor, since this is cloned from EqNullTerm
+		String type = knownTypeVars.get(var.getName());
+		if(type != null) {
+			var.setType(type);
 		}
 	}
 	

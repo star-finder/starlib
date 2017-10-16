@@ -1,6 +1,6 @@
 package starlib.formula.pure;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import starlib.StarVisitor;
@@ -78,25 +78,22 @@ public class NEqTerm extends PureTerm {
 //	}
 	
 	@Override
-	public void updateType(List<Variable> knownTypeVars) {
-		boolean hasUpdate = false;
-		
-		for (Variable v : knownTypeVars) {
-			if (v.equals(var1) || v.equals(var2)) {
-				var1.setType(v.getType());
-				var2.setType(v.getType());
-				
-				hasUpdate = true; 
-				
-				break;
-			}
+	public void updateType(HashMap<String, String> knownTypeVars) {
+		// TODO: Refactor, since this is cloned from EqTerm
+		// TODO: Handle polymorphism. At the moment, we assume that both
+		// LHS and RHS have the same type
+		String type1 = knownTypeVars.get(var1.getName());
+		String type2 = knownTypeVars.get(var2.getName());
+		String type = type1 != null? type1: type2;
+		if(type != null) {
+			// TODO: becareful when handling polymorphism
+			var1.setType(type);
+			var2.setType(type);
+			if(type1 == null) 
+				knownTypeVars.put(var1.getName(), type);
+			if(type2 == null) 
+				knownTypeVars.put(var2.getName(), type);
 		}
-		
-		if (hasUpdate && !knownTypeVars.contains(var1))
-			knownTypeVars.add(var1);
-		
-		if (hasUpdate && !knownTypeVars.contains(var2))
-			knownTypeVars.add(var2);
 	}
 	
 	@Override

@@ -1,6 +1,7 @@
 package starlib.formula.expression;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class Expression {
 		return null;
 	}
 	
-	public void updateType(List<Variable> knownTypeVars) {
+	public void updateType(HashMap<String, String> knownTypeVars) {
 		return;
 	}
 

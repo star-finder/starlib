@@ -1,6 +1,6 @@
 package starlib.formula;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import starlib.StarVisitor;
@@ -59,7 +59,7 @@ public class HeapFormula {
 		heapTerms = newHeapTerms;
 	}
 	
-	public void updateType(List<Variable> knownTypeVars) {
+	public void updateType(HashMap<String,String> knownTypeVars) {
 		int oldLength = knownTypeVars.size();
 		
 		while (true) {
