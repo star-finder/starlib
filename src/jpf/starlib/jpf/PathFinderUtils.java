@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gov.nasa.jpf.search.Search;
+import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.FieldInfo;
 import gov.nasa.jpf.vm.LocalVarInfo;
+import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import starlib.formula.Variable;
@@ -56,14 +58,17 @@ public class PathFinderUtils {
 		}
 	}
 	
-	/*
-	public static void generate() {
+	public static void generate(ClassInfo ci, MethodInfo mi) {
+		String clsName = ci.getSimpleName();
+		LocalVarInfo[] args = mi.getArgumentLocalVars();
+		FieldInfo[] insFields = ci.getInstanceFields();
+		FieldInfo[] staFields = ci.getDeclaredStaticFields();
 		List<Variable> knownTypeVars = new ArrayList<Variable>();
 		
 		for (LocalVarInfo arg : args) {
 			if (!arg.getName().equals("this")) {
 				String name = arg.getName();
-				String type = standarizeType(arg.getType());
+				String type = standardizeType(arg.getType());
 				
 				knownTypeVars.add(new Variable(name, type));
 			}
@@ -71,17 +76,26 @@ public class PathFinderUtils {
 		
 		for (FieldInfo field : insFields) {
 			String name = "this_" + field.getName();
-			String type = standarizeType(field.getType());
+			String type = standardizeType(field.getType());
 				
 			knownTypeVars.add(new Variable(name, type));
 		}
 		
 		for (FieldInfo field : staFields) {
 			String name = clsName + "_" + field.getName();
-			String type = standarizeType(field.getType());
+			String type = standardizeType(field.getType());
 				
 			knownTypeVars.add(new Variable(name, type));
 		}
 	}
-	//*/
+	
+	public static String standardizeType(String type) {
+		if (type.contains("."))
+			type = type.substring(type.lastIndexOf('.') + 1);
+		
+		if (type.contains("$"))
+			type = type.substring(type.lastIndexOf('$') + 1);
+		
+		return type;
+	}
 }
