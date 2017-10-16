@@ -177,6 +177,18 @@ public class Formula {
 		heapFormula.addTerm(ht);
 	}
 	
+	public void addPointToTermMockUp(Variable var, String type) {
+		DataNode dn = new DataNode(type, new Variable[0]);
+		DataNodeMap.put(dn);
+		
+		Variable[] vars = new Variable[1];
+		
+		vars[0] = new Variable(var.getName(), "");
+		
+		HeapTerm ht = new PointToTerm(type, vars);
+		heapFormula.addTerm(ht);
+	}
+	
 	public void addEqNullTerm(Variable var) {
 		PureTerm term = new EqNullTerm(var);
 		pureFormula.addTerm(term);
