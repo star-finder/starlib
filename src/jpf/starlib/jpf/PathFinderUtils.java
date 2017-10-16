@@ -1,7 +1,11 @@
 package starlib.jpf;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.vm.FieldInfo;
+import gov.nasa.jpf.vm.LocalVarInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
 import starlib.formula.Variable;
@@ -41,7 +45,7 @@ public class PathFinderUtils {
 	}
 	
 	public static void printErrorDetails(Search search) {
-		System.out.println(search.getLastError().getDetails());
+		System.out.println(search.getLastError().getDetails() + "\n");
 		ThreadInfo[] threads = search.getVM().getThreadList().getThreads();
 		for (ThreadInfo ti : threads) {
 			for (StackFrame frame : ti) {
@@ -51,4 +55,33 @@ public class PathFinderUtils {
 			}
 		}
 	}
+	
+	/*
+	public static void generate() {
+		List<Variable> knownTypeVars = new ArrayList<Variable>();
+		
+		for (LocalVarInfo arg : args) {
+			if (!arg.getName().equals("this")) {
+				String name = arg.getName();
+				String type = standarizeType(arg.getType());
+				
+				knownTypeVars.add(new Variable(name, type));
+			}
+		}
+		
+		for (FieldInfo field : insFields) {
+			String name = "this_" + field.getName();
+			String type = standarizeType(field.getType());
+				
+			knownTypeVars.add(new Variable(name, type));
+		}
+		
+		for (FieldInfo field : staFields) {
+			String name = clsName + "_" + field.getName();
+			String type = standarizeType(field.getType());
+				
+			knownTypeVars.add(new Variable(name, type));
+		}
+	}
+	//*/
 }

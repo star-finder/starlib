@@ -1,4 +1,4 @@
-package starlib.jpf;
+package starlib.jpf.testsuites;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import starlib.formula.PureFormula;
 import starlib.formula.Variable;
 import starlib.formula.pure.EqTerm;
 import starlib.formula.pure.PureTerm;
+import starlib.jpf.PathFinderUtils;
 
 public class PathFinderVisitor extends StarVisitor{
 

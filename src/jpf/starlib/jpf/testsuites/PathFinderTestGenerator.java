@@ -1,4 +1,4 @@
-package starlib.jpf;
+package starlib.jpf.testsuites;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import starlib.formula.Formula;
 import starlib.formula.HeapFormula;
 import starlib.formula.PureFormula;
 import starlib.formula.Variable;
+import starlib.jpf.PathFinderUtils;
 
 public class PathFinderTestGenerator extends PathFinderVisitor {
 

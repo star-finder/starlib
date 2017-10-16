@@ -1,10 +1,11 @@
-package starlib.jpf;
+package starlib.jpf.testsuites;
 
 import gov.nasa.jpf.vm.FieldInfo;
 import starlib.data.DataNode;
 import starlib.data.DataNodeMap;
 import starlib.formula.Variable;
 import starlib.formula.heap.PointToTerm;
+import starlib.jpf.PathFinderUtils;
 
 public class SetFieldsVisitor extends PathFinderVisitor{
 
