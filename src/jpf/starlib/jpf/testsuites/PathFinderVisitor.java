@@ -12,13 +12,13 @@ import starlib.jpf.PathFinderUtils;
 
 public class PathFinderVisitor extends StarVisitor{
 
-	List<Variable> knownTypeVars;
-	List<Variable> initVars;
-	StringBuffer test;
-	String objName;
-	String clsName;
-	FieldInfo[] insFields;
-	FieldInfo[] staFields;
+	protected List<Variable> knownTypeVars;
+	protected List<Variable> initVars;
+	protected StringBuffer test;
+	protected String objName;
+	protected String clsName;
+	protected FieldInfo[] insFields;
+	protected FieldInfo[] staFields;
 	
 	public PathFinderVisitor(List<Variable> knownTypeVars, List<Variable> initVars,
 			StringBuffer test, String objName, String clsName,
