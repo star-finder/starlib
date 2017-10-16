@@ -57,7 +57,7 @@ public class PathFinderUtils {
 		}
 	}
 	
-	public static void generate(ClassInfo ci, MethodInfo mi) {
+	public static HashMap<String, String> initTypeVarMap(ClassInfo ci, MethodInfo mi) {
 		String clsName = ci.getSimpleName();
 		LocalVarInfo[] args = mi.getArgumentLocalVars();
 		FieldInfo[] insFields = ci.getInstanceFields();
@@ -86,6 +86,7 @@ public class PathFinderUtils {
 				
 			knownTypeVars.put(name, type);
 		}
+		return knownTypeVars;
 	}
 	
 	public static String standardizeType(String type) {
