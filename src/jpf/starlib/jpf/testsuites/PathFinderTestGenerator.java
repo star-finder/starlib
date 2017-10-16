@@ -1,5 +1,6 @@
 package starlib.jpf.testsuites;
 
+import java.util.HashSet;
 import java.util.List;
 
 import gov.nasa.jpf.vm.FieldInfo;
@@ -11,7 +12,7 @@ import starlib.jpf.PathFinderUtils;
 
 public class PathFinderTestGenerator extends PathFinderVisitor {
 
-	public PathFinderTestGenerator(List<Variable> knownTypeVars, List<Variable> initVars, StringBuffer test,
+	public PathFinderTestGenerator(List<Variable> knownTypeVars, HashSet<Variable> initVars, StringBuffer test,
 			String objName, String clsName, FieldInfo[] insFields, FieldInfo[] staFields) {
 		super(knownTypeVars, initVars, test, objName, clsName, insFields, staFields);
 	}

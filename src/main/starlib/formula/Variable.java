@@ -60,13 +60,23 @@ public class Variable {
 			return false;
 		} else {
 			Variable otherVar = (Variable) other;
+			/*
 			if (type.equals("") || otherVar.getType().equals("")) {
 				return name.equals(otherVar.getName());
 			} else {
 				return name.equals(otherVar.getName()) &&
 						type.equals(otherVar.getType());
 			}
+			//*/
+			// Sang: I don't think checking type is necessary
+			// It is not possible to have two variables with the same name
+			return name.equals(otherVar.getName());
 		}
+	}
+	
+	@Override 
+	public int hashCode() {
+		return name.hashCode();
 	}
 
 }
