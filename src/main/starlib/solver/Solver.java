@@ -31,6 +31,21 @@ public class Solver {
 	
 	private static Process p = null;
 	
+	private static ExecutorService executor = Executors.newSingleThreadExecutor();
+	
+	public static void terminate() {
+		executor.shutdown();
+		/*
+		try {
+		    if (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
+		    	executor.shutdownNow();
+		    } 
+		} catch (InterruptedException e) {
+			executor.shutdownNow();
+		}
+		//*/
+	}
+	
 	public static boolean checkSat(Formula f, Config c) {
 //		System.out.println(f);
 //		System.out.println(f.getDepth());
@@ -147,7 +162,6 @@ public class Solver {
 				}
 			};
 
-			ExecutorService executor = Executors.newSingleThreadExecutor();
 			future = executor.submit(check);
 			
 			int maxTime = MAX_TIME;
