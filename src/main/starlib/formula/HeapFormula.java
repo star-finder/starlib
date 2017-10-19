@@ -110,9 +110,7 @@ public class HeapFormula {
 	}
 	
 	public void accept(StarVisitor visitor) {
-		for(HeapTerm heapTerm : heapTerms) {
-			heapTerm.accept(visitor);
-		}
+		visitor.visit(this);
 	}
 
 }

@@ -7,9 +7,9 @@ import starlib.formula.Variable;
 import starlib.formula.heap.PointToTerm;
 import starlib.jpf.PathFinderUtils;
 
-public class SetFieldsVisitor extends PathFinderVisitor{
+public class SetFieldsTestGenVisitor extends TestGenVisitor {
 
-	public SetFieldsVisitor(PathFinderVisitor that) {
+	public SetFieldsTestGenVisitor(TestGenVisitor that) {
 		super(that);
 	}
 		

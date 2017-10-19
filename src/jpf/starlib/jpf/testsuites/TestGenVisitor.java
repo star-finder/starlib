@@ -9,20 +9,29 @@ import starlib.formula.Formula;
 import starlib.formula.HeapFormula;
 import starlib.formula.PureFormula;
 import starlib.formula.Variable;
+import starlib.formula.heap.HeapTerm;
 import starlib.jpf.PathFinderUtils;
 
-public class PathFinderTestGenerator extends PathFinderVisitor {
+public class TestGenVisitor extends InitVarsVisitor {
+	
+	protected StringBuffer test;
 
-	public PathFinderTestGenerator(HashMap<String,String> knownTypeVars, HashSet<Variable> initVars, StringBuffer test,
-			String objName, String clsName, FieldInfo[] insFields, FieldInfo[] staFields) {
-		super(knownTypeVars, initVars, test, objName, clsName, insFields, staFields);
+	public TestGenVisitor(HashMap<String,String> knownTypeVars, HashSet<Variable> initVars,
+			String objName, String clsName, FieldInfo[] insFields, FieldInfo[] staFields, StringBuffer test) {
+		super(knownTypeVars, initVars, objName, clsName, insFields, staFields);
+		this.test = test;
+	}
+	
+	public TestGenVisitor(TestGenVisitor that) {
+		super(that);
+		this.test = that.test;
 	}
 
 	@Override
 	public void visit(Formula formula) {
-		ConcreteVisitor con = new ConcreteVisitor(this);
-		NoConcreteVisitor ncon = new NoConcreteVisitor(this);
-		SetFieldsVisitor setFields = new SetFieldsVisitor(this);
+		ConTestGenVisitor con = new ConTestGenVisitor(this);
+		NoConTestGenVisitor ncon = new NoConTestGenVisitor(this);
+		SetFieldsTestGenVisitor setFields = new SetFieldsTestGenVisitor(this);
 
 		HeapFormula heapFormula = formula.getHeapFormula();
 		PureFormula pureFormula = formula.getPureFormula();
@@ -34,6 +43,13 @@ public class PathFinderTestGenerator extends PathFinderVisitor {
 		genDefaultVars();
 
 		heapFormula.accept(setFields);
+	}
+	
+	@Override
+	public void visit(HeapFormula formula) {
+		for (HeapTerm heapTerm : formula.getHeapTerms()) {
+			heapTerm.accept(this);
+		}
 	}
 	
 	private void genDefaultVars() {

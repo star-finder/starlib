@@ -6,9 +6,9 @@ import starlib.formula.pure.NEqNullTerm;
 import starlib.formula.pure.NEqTerm;
 import starlib.jpf.PathFinderUtils;
 
-public class NoConcreteVisitor extends PathFinderVisitor {
+public class NoConTestGenVisitor extends TestGenVisitor {
 
-	public NoConcreteVisitor(PathFinderVisitor that) {
+	public NoConTestGenVisitor(TestGenVisitor that) {
 		super(that);
 	}
 

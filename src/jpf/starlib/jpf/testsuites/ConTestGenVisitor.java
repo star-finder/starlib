@@ -2,41 +2,20 @@ package starlib.jpf.testsuites;
 
 import java.util.List;
 
-import starlib.formula.HeapFormula;
 import starlib.formula.Variable;
 import starlib.formula.expression.Comparator;
 import starlib.formula.expression.Expression;
 import starlib.formula.expression.VariableExpression;
-import starlib.formula.heap.HeapTerm;
 import starlib.formula.heap.PointToTerm;
 import starlib.formula.pure.ComparisonTerm;
 import starlib.formula.pure.EqNullTerm;
+import starlib.formula.pure.EqTerm;
 import starlib.jpf.PathFinderUtils;
 
-public class ConcreteVisitor extends PathFinderVisitor {
+public class ConTestGenVisitor extends TestGenVisitor {
 
-	public ConcreteVisitor(PathFinderVisitor that) {
+	public ConTestGenVisitor(TestGenVisitor that) {
 		super(that);
-	}
-	
-	@Override
-	public void visit(HeapFormula formula) {
-		HeapTerm[] heapTerms = formula.getHeapTerms();
-		
-		int oldLength = initVars.size();
-		
-		while (true) {
-			int length = heapTerms.length;
-			
-			for (int i = 0; i < length; i++) {
-				heapTerms[i].accept(this);
-			}
-			
-			int newLength = initVars.size();
-			
-			if (newLength == oldLength) break;
-			else oldLength = newLength;
-		}
 	}
 	
 	@Override
@@ -54,6 +33,40 @@ public class ConcreteVisitor extends PathFinderVisitor {
 				test.append("\t\t" + name.replace(clsName + "_", clsName + ".") + " = new " + type + "();\n");
 			else
 				test.append("\t\t" + type + " " + name + " = new " + type + "();\n");
+		}
+	}
+	
+	@Override
+	public void visit(EqTerm term) {
+		Variable var1 = term.getVar1();
+		Variable var2 = term.getVar2();
+		
+		if (initVars.contains(var2) && !initVars.contains(var1)) {
+			initVars.add(var1);
+			
+			String name1 = PathFinderUtils.standarizeName(var1, objName, clsName, insFields, staFields);
+			String name2 = PathFinderUtils.standarizeName(var2, objName, clsName, insFields, staFields);
+			
+			String type = var1.getType();
+			
+			if (PathFinderUtils.isInstanceVariable(var1,insFields) || PathFinderUtils.isClassVariable(var1,clsName, staFields))
+				test.append("\t\t" + name1 + " = " + name2 + ";\n");
+			else
+				test.append("\t\t" + type + " " + name1 + " = " + name2 + ";\n");
+		}
+		
+		if (initVars.contains(var1) && !initVars.contains(var2)) {
+			initVars.add(var2);
+			
+			String name1 = PathFinderUtils.standarizeName(var1, objName, clsName, insFields, staFields);
+			String name2 = PathFinderUtils.standarizeName(var2, objName, clsName, insFields, staFields);
+			
+			String type = var2.getType();
+			
+			if (PathFinderUtils.isInstanceVariable(var2,insFields) || PathFinderUtils.isClassVariable(var2,clsName, staFields))
+				test.append("\t\t" + name2 + " = " + name1 + ";\n");
+			else
+				test.append("\t\t" + type + " " + name2 + " = " + name1 + ";\n");
 		}
 	}
 	
