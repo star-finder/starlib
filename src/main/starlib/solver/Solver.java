@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -44,6 +45,14 @@ public class Solver {
 			executor.shutdownNow();
 		}
 		//*/
+	}
+	
+	public static boolean checkSat(List<Formula> fs, Config c) {
+		for (Formula f : fs) {
+			if (checkSat(f, c)) return true;
+		}
+		
+		return false;
 	}
 	
 	public static boolean checkSat(Formula f, Config c) {
@@ -137,7 +146,7 @@ public class Solver {
 								readModel = false;
 								break;
 							} else if (s.contains(": UNSAT")) {
-								ret = false;
+								ret = false; model = new StringBuilder();
 								readModel = false;
 								break;
 							}
