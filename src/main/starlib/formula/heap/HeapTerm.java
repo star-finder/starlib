@@ -1,5 +1,6 @@
 package starlib.formula.heap;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,17 +12,19 @@ public abstract class HeapTerm {
 	// variables of current term, first variable is the root
 	protected Variable[] vars;
 	
-	public HeapTerm substitute(Variable[] fromVars, Variable[] toVars,
-			Map<String,String> existVarSubMap) {
-		return null;
-	}
-	
+	public abstract HeapTerm substitute(Variable[] fromVars, Variable[] toVars,
+			Map<String,String> existVarSubMap);
+		
 	public Variable getRoot() {
 		return vars[0];
 	}
 	
 	public Variable[] getVars() {
 		return vars;
+	}
+	
+	public Variable[] getVarsNoRoot() {
+		return Arrays.copyOfRange(vars, 1, vars.length);
 	}
 	
 	public HeapTerm copy() {
