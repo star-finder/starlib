@@ -65,9 +65,9 @@ public class PathFinderUtils {
 		HashMap<String, String> knownTypeVars = new HashMap<String, String>();
 		
 		for (LocalVarInfo arg : args) {
-			if (!arg.getName().equals("this")) {
+			if (!arg.getName().equals("this")) {				
 				String name = arg.getName();
-				String type = standardizeType(arg.getType());
+				String type = toS2SATType(arg.getType());
 				
 				knownTypeVars.put(name, type);
 			}
@@ -75,27 +75,48 @@ public class PathFinderUtils {
 		
 		for (FieldInfo field : insFields) {
 			String name = "this_" + field.getName();
-			String type = standardizeType(field.getType());
+			String type = toS2SATType(field.getType());
 				
 			knownTypeVars.put(name, type);
 		}
 		
 		for (FieldInfo field : staFields) {
 			String name = clsName + "_" + field.getName();
-			String type = standardizeType(field.getType());
+			String type = toS2SATType(field.getType());
 				
 			knownTypeVars.put(name, type);
 		}
 		return knownTypeVars;
 	}
 	
-	public static String standardizeType(String type) {
+	public static String toS2SATType(String type) {
 		if (type.contains("."))
-			type = type.substring(type.lastIndexOf('.') + 1);
+			type = type.replaceAll("\\.", "_");
 		
 		if (type.contains("$"))
-			type = type.substring(type.lastIndexOf('$') + 1);
+			type = type.replaceAll("$", "__");
 		
 		return type;
 	}
+	
+	public static String toJavaType(String type) {
+		if (type.contains("__"))
+			type = type.replaceAll("__", "$$");
+		
+		if (type.contains("_"))
+			type = type.replaceAll("_", ".");
+		
+		return type;
+	}
+	
+//	public static String standardizeType(String type) {
+//		if (type.contains("."))
+//			type = type.substring(type.lastIndexOf('.') + 1);
+//		
+//		if (type.contains("$"))
+//			type = type.substring(type.lastIndexOf('$') + 1);
+//		
+//		return type;
+//	}
+	
 }
