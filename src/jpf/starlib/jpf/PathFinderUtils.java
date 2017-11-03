@@ -67,7 +67,7 @@ public class PathFinderUtils {
 		for (LocalVarInfo arg : args) {
 			if (!arg.getName().equals("this")) {				
 				String name = arg.getName();
-				String type = toS2SATType(arg.getType());
+				String type = toJavaType(arg.getType());
 				
 				knownTypeVars.put(name, type);
 			}
@@ -75,7 +75,7 @@ public class PathFinderUtils {
 		
 		for (FieldInfo field : insFields) {
 			String name = "this_" + field.getName();
-			String type = toS2SATType(field.getType());
+			String type = toJavaType(field.getType());
 				
 			knownTypeVars.put(name, type);
 		}
