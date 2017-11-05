@@ -44,8 +44,8 @@ public class ConTestGenVisitor extends TestGenVisitor {
 		if (initVars.contains(var2) && !initVars.contains(var1)) {
 			initVars.add(var1);
 			
-			String name1 = PathFinderUtils.standarizeName(var1, objName, clsName, insFields, staFields);
-			String name2 = PathFinderUtils.standarizeName(var2, objName, clsName, insFields, staFields);
+			String name1 = PathFinderUtils.standardizeName(var1, objName, clsName, insFields, staFields);
+			String name2 = PathFinderUtils.standardizeName(var2, objName, clsName, insFields, staFields);
 			
 			String type = var1.getType();
 			
@@ -58,8 +58,8 @@ public class ConTestGenVisitor extends TestGenVisitor {
 		if (initVars.contains(var1) && !initVars.contains(var2)) {
 			initVars.add(var2);
 			
-			String name1 = PathFinderUtils.standarizeName(var1, objName, clsName, insFields, staFields);
-			String name2 = PathFinderUtils.standarizeName(var2, objName, clsName, insFields, staFields);
+			String name1 = PathFinderUtils.standardizeName(var1, objName, clsName, insFields, staFields);
+			String name2 = PathFinderUtils.standardizeName(var2, objName, clsName, insFields, staFields);
 			
 			String type = var2.getType();
 			

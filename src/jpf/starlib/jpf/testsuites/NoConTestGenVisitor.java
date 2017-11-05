@@ -59,9 +59,9 @@ public class NoConTestGenVisitor extends TestGenVisitor {
 			else
 				test.append("\t\t" + type1 + " " + name1 + " = new " + type1 + "();\n");
 			
-			name1 = PathFinderUtils.standarizeName(var1, objName, clsName, insFields, staFields);
+			name1 = PathFinderUtils.standardizeName(var1, objName, clsName, insFields, staFields);
 			
-			String name2 = PathFinderUtils.standarizeName(var2, objName, clsName, insFields, staFields);
+			String name2 = PathFinderUtils.standardizeName(var2, objName, clsName, insFields, staFields);
 			String type2 = var2.getType();
 			
 			if (PathFinderUtils.isInstanceVariable(var2, insFields) || PathFinderUtils.isClassVariable(var2, clsName, staFields))

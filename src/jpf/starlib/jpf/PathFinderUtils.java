@@ -1,7 +1,10 @@
 package starlib.jpf;
 
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.HashMap;
 
+import gov.nasa.jpf.Config;
 import gov.nasa.jpf.search.Search;
 import gov.nasa.jpf.vm.ClassInfo;
 import gov.nasa.jpf.vm.FieldInfo;
@@ -33,7 +36,7 @@ public class PathFinderUtils {
 		return false;
 	}
 	
-	public static String standarizeName(Variable var, String objName, String clsName,
+	public static String standardizeName(Variable var, String objName, String clsName,
 			FieldInfo[] insFields, FieldInfo[] staFields) {
 		String name = var.getName();
 		
@@ -118,5 +121,30 @@ public class PathFinderUtils {
 //		
 //		return type;
 //	}
+	
+	public static void writeToFile(StringBuffer test, Config conf, ClassInfo ci, MethodInfo mi) {
+		String fileName = ci.getSimpleName() + "_" + mi.getName() + "1.java";
+		String path = conf.getProperty("star.test_path");
+		// create the directory if it does not exist
+		try {
+			File dir = new File(path);
+			if (!dir.exists()) {
+				dir.mkdirs();
+			} else{
+				// FileUtils.cleanDirectory(dir);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			PrintWriter pw = new PrintWriter(path + "/" + fileName, "UTF-8");
+			pw.println(test.toString());
+			
+			pw.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 }
