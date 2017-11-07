@@ -12,6 +12,10 @@ public class VariableExpression extends Expression {
 	
 	private Variable var;
 	
+	public VariableExpression(String name) {
+		this.var = new Variable(name);
+	}
+	
 	public VariableExpression(Variable var) {
 		this.var = var;
 	}

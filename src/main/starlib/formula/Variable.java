@@ -6,6 +6,11 @@ public class Variable {
 	
 	private String type;
 	
+	public Variable(String name) {
+		this.name = name;
+		this.type = ""; // unknown type
+	}
+	
 	public Variable(String name, String type) {
 		this.name = name;
 		this.type = type;

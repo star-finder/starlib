@@ -9,6 +9,7 @@ import starlib.formula.Variable;
 
 // x != null term
 
+@Deprecated
 public class NEqNullTerm extends PureTerm {
 	
 	private Variable var;

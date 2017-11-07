@@ -205,26 +205,6 @@ public class Formula {
 		heapFormula.addTerm(ht);
 	}
 	
-	public void addEqNullTerm(Variable var) {
-		PureTerm term = new EqNullTerm(var);
-		pureFormula.addTerm(term);
-	}
-	
-	public void addNEqNullTerm(Variable var) {
-		PureTerm term = new NEqNullTerm(var);
-		pureFormula.addTerm(term);
-	}
-	
-	public void addEqTerm(Variable var1, Variable var2) {
-		PureTerm term = new EqTerm(var1, var2);
-		pureFormula.addTerm(term);
-	}
-	
-	public void addNEqTerm(Variable var1, Variable var2) {
-		PureTerm term = new NEqTerm(var1, var2);
-		pureFormula.addTerm(term);
-	}
-	
 	public void addComparisonTerm(Comparator comp, Expression exp1, Expression exp2) {
 		PureTerm term = new ComparisonTerm(comp, exp1, exp2);
 		pureFormula.addTerm(term);
@@ -310,6 +290,32 @@ public class Formula {
 			return heapString;
 		else
 			return heapString + " & " + pureString;
+	}
+	
+	// Deprecated APIs, should use ComparisonTerms instead of those redundant Terms
+	
+	@Deprecated
+	public void addEqNullTerm(Variable var) {
+		PureTerm term = new EqNullTerm(var);
+		pureFormula.addTerm(term);
+	}
+	
+	@Deprecated
+	public void addNEqNullTerm(Variable var) {
+		PureTerm term = new NEqNullTerm(var);
+		pureFormula.addTerm(term);
+	}
+	
+	@Deprecated
+	public void addEqTerm(Variable var1, Variable var2) {
+		PureTerm term = new EqTerm(var1, var2);
+		pureFormula.addTerm(term);
+	}
+	
+	@Deprecated
+	public void addNEqTerm(Variable var1, Variable var2) {
+		PureTerm term = new NEqTerm(var1, var2);
+		pureFormula.addTerm(term);
 	}
 
 }

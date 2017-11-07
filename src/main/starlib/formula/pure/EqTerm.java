@@ -9,6 +9,7 @@ import starlib.formula.Variable;
 
 // x = y term
 
+@Deprecated
 public class EqTerm extends PureTerm {
 	
 	private Variable var1;

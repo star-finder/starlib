@@ -54,7 +54,9 @@ public class ComparisonTerm extends PureTerm {
 	
 	@Override
 	public String toString() {
-		return exp1.toString() + comp.toString() + exp2.toString();
+		String str1 = (exp1 == null)? "null" : exp1.toString();
+		String str2 = (exp2 == null)? "null" : exp2.toString();
+		return str1 + comp.toString() + str2;
 	}
 
 	@Override
