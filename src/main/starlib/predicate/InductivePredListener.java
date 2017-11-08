@@ -2,6 +2,22 @@
 
 package starlib.predicate;
 
+import starlib.formula.Formula;
+import starlib.formula.HeapFormula;
+import starlib.formula.PureFormula;
+import starlib.formula.Variable;
+import starlib.formula.expression.BinaryExpression;
+import starlib.formula.expression.Comparator;
+import starlib.formula.expression.Expression;
+import starlib.formula.expression.LiteralExpression;
+import starlib.formula.expression.NullExpression;
+import starlib.formula.expression.Operator;
+import starlib.formula.heap.HeapTerm;
+import starlib.formula.heap.InductiveTerm;
+import starlib.formula.heap.PointToTerm;
+import starlib.formula.pure.ComparisonTerm;
+import starlib.formula.pure.PureTerm;
+
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -139,46 +155,6 @@ public interface InductivePredListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPureTerm(InductivePredParser.PureTermContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link InductivePredParser#eqNullTerm}.
-	 * @param ctx the parse tree
-	 */
-	void enterEqNullTerm(InductivePredParser.EqNullTermContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link InductivePredParser#eqNullTerm}.
-	 * @param ctx the parse tree
-	 */
-	void exitEqNullTerm(InductivePredParser.EqNullTermContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link InductivePredParser#neNullTerm}.
-	 * @param ctx the parse tree
-	 */
-	void enterNeNullTerm(InductivePredParser.NeNullTermContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link InductivePredParser#neNullTerm}.
-	 * @param ctx the parse tree
-	 */
-	void exitNeNullTerm(InductivePredParser.NeNullTermContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link InductivePredParser#eqTerm}.
-	 * @param ctx the parse tree
-	 */
-	void enterEqTerm(InductivePredParser.EqTermContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link InductivePredParser#eqTerm}.
-	 * @param ctx the parse tree
-	 */
-	void exitEqTerm(InductivePredParser.EqTermContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link InductivePredParser#neTerm}.
-	 * @param ctx the parse tree
-	 */
-	void enterNeTerm(InductivePredParser.NeTermContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link InductivePredParser#neTerm}.
-	 * @param ctx the parse tree
-	 */
-	void exitNeTerm(InductivePredParser.NeTermContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link InductivePredParser#comparisonTerm}.
 	 * @param ctx the parse tree

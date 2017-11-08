@@ -2,16 +2,30 @@
 
 package starlib.predicate;
 
-import org.antlr.v4.runtime.CharStream;
+import starlib.formula.Formula;
+import starlib.formula.HeapFormula;
+import starlib.formula.PureFormula;
+import starlib.formula.Variable;
+import starlib.formula.expression.BinaryExpression;
+import starlib.formula.expression.Comparator;
+import starlib.formula.expression.Expression;
+import starlib.formula.expression.LiteralExpression;
+import starlib.formula.expression.NullExpression;
+import starlib.formula.expression.Operator;
+import starlib.formula.heap.HeapTerm;
+import starlib.formula.heap.InductiveTerm;
+import starlib.formula.heap.PointToTerm;
+import starlib.formula.pure.ComparisonTerm;
+import starlib.formula.pure.PureTerm;
+
 import org.antlr.v4.runtime.Lexer;
-import org.antlr.v4.runtime.RuntimeMetaData;
-import org.antlr.v4.runtime.Vocabulary;
-import org.antlr.v4.runtime.VocabularyImpl;
-import org.antlr.v4.runtime.atn.ATN;
-import org.antlr.v4.runtime.atn.ATNDeserializer;
-import org.antlr.v4.runtime.atn.LexerATNSimulator;
-import org.antlr.v4.runtime.atn.PredictionContextCache;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class InductivePredLexer extends Lexer {

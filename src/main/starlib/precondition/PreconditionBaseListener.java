@@ -2,6 +2,23 @@
 
 package starlib.precondition;
 
+import starlib.formula.Formula;
+import starlib.formula.HeapFormula;
+import starlib.formula.PureFormula;
+import starlib.formula.Variable;
+import starlib.formula.expression.BinaryExpression;
+import starlib.formula.expression.Comparator;
+import starlib.formula.expression.Expression;
+import starlib.formula.expression.LiteralExpression;
+import starlib.formula.expression.NullExpression;
+import starlib.formula.expression.Operator;
+import starlib.formula.heap.HeapTerm;
+import starlib.formula.heap.InductiveTerm;
+import starlib.formula.heap.PointToTerm;
+import starlib.formula.pure.ComparisonTerm;
+import starlib.formula.pure.PureTerm;
+
+
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -156,54 +173,6 @@ public class PreconditionBaseListener implements PreconditionListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPureTerm(PreconditionParser.PureTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEqNullTerm(PreconditionParser.EqNullTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEqNullTerm(PreconditionParser.EqNullTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNeNullTerm(PreconditionParser.NeNullTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNeNullTerm(PreconditionParser.NeNullTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEqTerm(PreconditionParser.EqTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEqTerm(PreconditionParser.EqTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNeTerm(PreconditionParser.NeTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNeTerm(PreconditionParser.NeTermContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

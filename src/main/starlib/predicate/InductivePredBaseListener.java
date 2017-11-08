@@ -2,6 +2,23 @@
 
 package starlib.predicate;
 
+import starlib.formula.Formula;
+import starlib.formula.HeapFormula;
+import starlib.formula.PureFormula;
+import starlib.formula.Variable;
+import starlib.formula.expression.BinaryExpression;
+import starlib.formula.expression.Comparator;
+import starlib.formula.expression.Expression;
+import starlib.formula.expression.LiteralExpression;
+import starlib.formula.expression.NullExpression;
+import starlib.formula.expression.Operator;
+import starlib.formula.heap.HeapTerm;
+import starlib.formula.heap.InductiveTerm;
+import starlib.formula.heap.PointToTerm;
+import starlib.formula.pure.ComparisonTerm;
+import starlib.formula.pure.PureTerm;
+
+
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -168,54 +185,6 @@ public class InductivePredBaseListener implements InductivePredListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPureTerm(InductivePredParser.PureTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEqNullTerm(InductivePredParser.EqNullTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEqNullTerm(InductivePredParser.EqNullTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNeNullTerm(InductivePredParser.NeNullTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNeNullTerm(InductivePredParser.NeNullTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterEqTerm(InductivePredParser.EqTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitEqTerm(InductivePredParser.EqTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNeTerm(InductivePredParser.NeTermContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNeTerm(InductivePredParser.NeTermContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

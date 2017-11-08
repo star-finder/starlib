@@ -2,6 +2,22 @@
 
 package starlib.precondition;
 
+import starlib.formula.Formula;
+import starlib.formula.HeapFormula;
+import starlib.formula.PureFormula;
+import starlib.formula.Variable;
+import starlib.formula.expression.BinaryExpression;
+import starlib.formula.expression.Comparator;
+import starlib.formula.expression.Expression;
+import starlib.formula.expression.LiteralExpression;
+import starlib.formula.expression.NullExpression;
+import starlib.formula.expression.Operator;
+import starlib.formula.heap.HeapTerm;
+import starlib.formula.heap.InductiveTerm;
+import starlib.formula.heap.PointToTerm;
+import starlib.formula.pure.ComparisonTerm;
+import starlib.formula.pure.PureTerm;
+
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -129,46 +145,6 @@ public interface PreconditionListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPureTerm(PreconditionParser.PureTermContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PreconditionParser#eqNullTerm}.
-	 * @param ctx the parse tree
-	 */
-	void enterEqNullTerm(PreconditionParser.EqNullTermContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PreconditionParser#eqNullTerm}.
-	 * @param ctx the parse tree
-	 */
-	void exitEqNullTerm(PreconditionParser.EqNullTermContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PreconditionParser#neNullTerm}.
-	 * @param ctx the parse tree
-	 */
-	void enterNeNullTerm(PreconditionParser.NeNullTermContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PreconditionParser#neNullTerm}.
-	 * @param ctx the parse tree
-	 */
-	void exitNeNullTerm(PreconditionParser.NeNullTermContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PreconditionParser#eqTerm}.
-	 * @param ctx the parse tree
-	 */
-	void enterEqTerm(PreconditionParser.EqTermContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PreconditionParser#eqTerm}.
-	 * @param ctx the parse tree
-	 */
-	void exitEqTerm(PreconditionParser.EqTermContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PreconditionParser#neTerm}.
-	 * @param ctx the parse tree
-	 */
-	void enterNeTerm(PreconditionParser.NeTermContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PreconditionParser#neTerm}.
-	 * @param ctx the parse tree
-	 */
-	void exitNeTerm(PreconditionParser.NeTermContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PreconditionParser#comparisonTerm}.
 	 * @param ctx the parse tree
