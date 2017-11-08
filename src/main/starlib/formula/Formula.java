@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import starlib.StarVisitor;
@@ -77,8 +78,8 @@ public class Formula {
 		return pureFormula;
 	}
 	
-	public List<List<Variable>> getAlias() {
-		return pureFormula.getAlias();
+	public Map<String,Set<String>> getAliasMap(){
+		return pureFormula.getAliasMap();
 	}
 	
 	public void setDepth(int d) {
@@ -89,6 +90,11 @@ public class Formula {
 		return depth;
 	}
 	
+	public Set<String> getAlias(String name) {		
+		return getAliasMap().get(name);
+	}
+	
+	/*
 	public List<Variable> getAlias(String name) {
 		Variable temp = new Variable(name, "");
 		
@@ -100,6 +106,7 @@ public class Formula {
 		
 		return null;
 	}
+	//*/
 	
 	public Formula rename(Variable var, Variable[] fields) {
 		HeapTerm ht = Utilities.findHeapTerm(this, var.getName());
@@ -221,6 +228,7 @@ public class Formula {
 	}
 	
 	public void putAddress(String name, int address) {
+		System.out.println("Put address: " + name + " -> " + address);
 		addressMap.put(name, address);
 	}
 	
@@ -240,13 +248,12 @@ public class Formula {
 		return address;
 	}
 	
-	public int findAddress(List<Variable> vars) {
+	public int findAddress(Set<String> vars) {
 		if (vars == null)
 			return -1;
 		
-		for (Variable var : vars) {
-			String name = var.getName();
-			int address = findAddress(name);
+		for (String var : vars) {
+			int address = findAddress(var);
 			if (address != -1) return address;
 		}
 		
@@ -317,5 +324,4 @@ public class Formula {
 		PureTerm term = new NEqTerm(var1, var2);
 		pureFormula.addTerm(term);
 	}
-
 }

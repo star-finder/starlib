@@ -61,11 +61,5 @@ public class ComparisonTerm extends PureTerm {
 	public void accept(StarVisitor visitor) {
 		visitor.visit(this);
 	}
-	
-	@Override
-	public boolean isEqVar() {
-		// the variable is guaranteed to be on the LHS
-		return comp == Comparator.EQ && exp1 instanceof Variable;
-	}
 
 }

@@ -1,13 +1,10 @@
 package starlib.formula;
 
-import java.util.List;
+import java.util.Set;
 
 import starlib.formula.heap.HeapTerm;
 import starlib.formula.heap.InductiveTerm;
 import starlib.formula.heap.PointToTerm;
-import starlib.formula.pure.EqNullTerm;
-import starlib.formula.pure.NEqNullTerm;
-import starlib.formula.pure.PureTerm;
 
 public class Utilities {
 	
@@ -60,6 +57,17 @@ public class Utilities {
 	}
 	
 	public static boolean isNull(Formula pc, String varName) {
+		Set<String> alias = pc.getAlias("null");
+
+		if(alias == null) {
+			return false;
+		} 
+		
+		return alias.contains(varName);
+	}
+	
+	/*
+	public static boolean isNull(Formula pc, String varName) {
 		PureFormula pf = pc.getPureFormula();
 		List<List<Variable>> alias = pc.getAlias();
 
@@ -87,36 +95,41 @@ public class Utilities {
 
 		return false;
 	}
+	//*/
 	
-	public static boolean isNotNull(Formula pc, String varName) {
-		PureFormula pf = pc.getPureFormula();
-		List<List<Variable>> alias = pc.getAlias();
+	//*
+	public static HeapTerm findHeapTerm(Formula pc, String varName) {
+		HeapFormula hf = pc.getHeapFormula();
+		Set<String> alias = pc.getAlias(varName);
 
-		for (PureTerm term : pf.getPureTerms()) {
-			if (term instanceof NEqNullTerm) {
-				NEqNullTerm eqNullTerm = (NEqNullTerm) term;
-				Variable root = eqNullTerm.getVar();
-				String rootName = root.getName();
+		for (HeapTerm term : hf.getHeapTerms()) {
+			Variable root = null;
+			
+			if (term instanceof PointToTerm) {
+				PointToTerm ptTerm = (PointToTerm) term;
+				root = ptTerm.getRoot();
+			} else if (term instanceof InductiveTerm) {
+				InductiveTerm itTerm = (InductiveTerm) term;
+				root = itTerm.getRoot();
+			}
+			
+			String rootName = root.getName();
 
-				if (rootName.equals(varName)) {
-					return true;
-				} else {
-					for (List<Variable> vars : alias) {
-						if (vars.contains(root)) {
-							for (Variable var : vars) {
-								if (var.getName().equals(varName)) {
-									return true;
-								}
-							}
-						}
-					}
+			if (rootName.equals(varName)) {
+				return term;
+			} else {
+				if(alias != null && alias.contains(rootName)) {
+					return term;
 				}
 			}
 		}
 
-		return false;
+		return null;
 	}
+	//*/
 	
+	
+	/*
 	public static HeapTerm findHeapTerm(Formula pc, String varName) {
 		HeapFormula hf = pc.getHeapFormula();
 		List<List<Variable>> alias = pc.getAlias();
@@ -151,4 +164,5 @@ public class Utilities {
 
 		return null;
 	}
+	//*/
 }

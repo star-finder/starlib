@@ -2,11 +2,15 @@ package starlib.formula;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import starlib.StarVisitor;
+import starlib.formula.expression.Comparator;
 import starlib.formula.expression.Expression;
+import starlib.formula.expression.NullExpression;
 import starlib.formula.pure.ComparisonTerm;
 import starlib.formula.pure.EqTerm;
 import starlib.formula.pure.PureTerm;
@@ -18,15 +22,18 @@ public class PureFormula {
 	// contains array of pure terms, empty means true
 	private PureTerm[] pureTerms;
 	
-	private List<List<Variable>> alias;
+	private Map<String,Set<String>> aliasMap;
+	
 	
 	public PureFormula(PureTerm... pureTerms) {
 		this.pureTerms = pureTerms;
-		this.alias = new ArrayList<List<Variable>>();
+				
+		this.aliasMap = new HashMap<String,Set<String>>();
 		
 		for (PureTerm term : pureTerms) {
-			if (term instanceof EqTerm) {
-				updateAlias((EqTerm) term);
+
+			if(term instanceof ComparisonTerm) {
+				updateAlias((ComparisonTerm) term);
 			}
 		}
 	}
@@ -35,36 +42,58 @@ public class PureFormula {
 		return pureTerms;
 	}
 	
-	public List<List<Variable>> getAlias() {
-		return alias;
+	public Map<String,Set<String>> getAliasMap(){
+		return aliasMap;
 	}
 	
-	private void updateAlias(EqTerm term) {
-		Variable var1 = term.getVar1();
-		Variable var2 = term.getVar2();
+	/*
+	 * This method replaced the old updateAlias for deprecated EqTerm
+	 */
+	private void updateAlias(ComparisonTerm term) {
+		Expression exp1 = term.getExp1();
+		Expression exp2 = term.getExp2();
 
-		boolean done = false;
+		if(term.getComparator() != Comparator.EQ)
+			return;
+		if(!(exp1 instanceof Variable))
+			return;
+		if(!(exp2 instanceof Variable || exp2 instanceof NullExpression)) 
+			return;
 
-		for (List<Variable> vars : alias) {
-			if (vars.contains(var1) && vars.contains(var2)) {
-				done = true;
-				break;
-			} else if (vars.contains(var1) && !vars.contains(var2)) {
-				done = true;
-				vars.add(var2);
-				break;
-			} else if (!vars.contains(var1) && vars.contains(var2)) {
-				done = true;
-				vars.add(var1);
-				break;
+		String lhs = exp1.toString();
+		String rhs = exp2.toString();
+		Set<String> alias1 = aliasMap.get(lhs);
+		Set<String> alias2 = aliasMap.get(rhs);
+		if(alias1 != null) {
+			// group everything to alias1
+			if(alias2 != null) {
+				// union the two sets of aliases
+				alias1.addAll(alias2);
+			} else {
+				// just add the new one
+				alias1.add(rhs);
 			}
+			aliasMap.put(rhs, alias1);
+		} else {
+			// group everything to alias2
+			if(alias2 != null) {
+				alias2.add(lhs);
+			} else {
+				// both lhs and rhs are new
+				alias2 = new HashSet<String>();
+				alias2.add(lhs);
+				alias2.add(rhs);
+				aliasMap.put(rhs, alias2);
+			}
+			aliasMap.put(lhs, alias2);
 		}
-
-		if (!done) {
-			List<Variable> vars = new ArrayList<Variable>();
-			vars.add(var1);
-			vars.add(var2);
-			alias.add(vars);
+	}
+	
+	public void printAliasMap() {
+		for(Set<String> alias : aliasMap.values()) {
+			System.out.println("----------------------------------------");
+			for(String var : alias)
+				System.out.print(var + " ");
 		}
 	}
 	
@@ -105,8 +134,8 @@ public class PureFormula {
 		newPureTerms[length - 1] = term;
 		pureTerms = newPureTerms;
 		
-		if (term instanceof EqTerm) {
-			updateAlias((EqTerm) term);
+		if(term instanceof ComparisonTerm) {
+			updateAlias((ComparisonTerm) term);
 		}
 	}
 	
