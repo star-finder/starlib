@@ -11,12 +11,16 @@ public class LiteralExpression implements Expression {
 	
 	private String value;
 	
+	public LiteralExpression(int value) {
+		this.value = Integer.toString(value);
+	}
+	
 	public LiteralExpression(long value) {
-		this.value = value + "";
+		this.value = Long.toString(value);
 	}
 	
 	public LiteralExpression(double value) {
-		this.value = value + "";
+		this.value = Double.toString(value);
 	}
 	
 	public LiteralExpression(String value) {
