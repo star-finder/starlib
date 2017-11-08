@@ -24,4 +24,12 @@ public abstract class PureTerm {
 	}
 
 	public abstract void accept(StarVisitor visitor);
+	
+	/*
+	 * This method check if the term is an equal comparison between a variable
+	 * and something else, e.g. another variable or null
+	 */
+	public boolean isEqVar() {
+		return false;
+	}
 }

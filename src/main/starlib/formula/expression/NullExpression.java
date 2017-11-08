@@ -37,5 +37,10 @@ public class NullExpression implements Expression{
 	public String toString() {
 		return "null";
 	}
+	
+	@Override 
+	public int hashCode() {
+		return "null".hashCode();
+	}
 
 }

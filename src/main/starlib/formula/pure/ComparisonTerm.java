@@ -54,14 +54,18 @@ public class ComparisonTerm extends PureTerm {
 	
 	@Override
 	public String toString() {
-		String str1 = (exp1 == null)? "null" : exp1.toString();
-		String str2 = (exp2 == null)? "null" : exp2.toString();
-		return str1 + comp.toString() + str2;
+		return exp1.toString() + comp.toString() + exp2.toString();
 	}
 
 	@Override
 	public void accept(StarVisitor visitor) {
 		visitor.visit(this);
+	}
+	
+	@Override
+	public boolean isEqVar() {
+		// the variable is guaranteed to be on the LHS
+		return comp == Comparator.EQ && exp1 instanceof Variable;
 	}
 
 }
