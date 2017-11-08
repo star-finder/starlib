@@ -10,10 +10,6 @@ public abstract class PureTerm {
 	
 	public abstract PureTerm substitute(Variable[] fromVars, Variable[] toVars,
 			Map<String,String> existVarSubMap);
-		
-	public Variable[] getVars() {
-		return null;
-	}
 	
 	public PureTerm copy() {
 		return this;

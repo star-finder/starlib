@@ -6,10 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import starlib.StarVisitor;
-import starlib.formula.pure.EqNullTerm;
+import starlib.formula.expression.Expression;
+import starlib.formula.pure.ComparisonTerm;
 import starlib.formula.pure.EqTerm;
-import starlib.formula.pure.NEqNullTerm;
-import starlib.formula.pure.NEqTerm;
 import starlib.formula.pure.PureTerm;
 
 // a pure formula includes multiple pure terms
@@ -134,18 +133,14 @@ public class PureFormula {
 		List<PureTerm> tmp = new ArrayList<PureTerm>();
 		
 		for (PureTerm pt : pureTerms) {
-			if (pt instanceof EqNullTerm) { 
-				Variable var = ((EqNullTerm) pt).getVar();
-				if (var.hasType()) tmp.add(pt);
-			} else if (pt instanceof NEqNullTerm) {
-				Variable var = ((NEqNullTerm) pt).getVar();
-				if (var.hasType()) tmp.add(pt);
-			} else if (pt instanceof EqTerm) {
-				Variable var1 = ((EqTerm) pt).getVar1();
-				if (var1.hasType() && !var1.isPrim()) tmp.add(pt);
-			} else if (pt instanceof NEqTerm) {
-				Variable var1 = ((NEqTerm) pt).getVar1();
-				if (var1.hasType() && !var1.isPrim()) tmp.add(pt);
+			if(pt instanceof ComparisonTerm) {
+				Expression exp1 = ((ComparisonTerm) pt).getExp1();
+				if(exp1 instanceof Variable) {
+					Variable var = (Variable)exp1;
+					if(var.hasType() && !var.isPrim()) {
+						tmp.add(pt);
+					}
+				}
 			}
 		}
 		
