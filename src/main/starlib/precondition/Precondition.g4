@@ -1,14 +1,23 @@
 grammar Precondition;
 
 @header {
-package star.precondition;
+package starlib.precondition;
 
-import star.formula.*;
-import star.formula.heap.*;
-import star.formula.pure.*;
-import star.formula.expression.*;
-import gov.nasa.jpf.symbc.numeric.Comparator;
-import gov.nasa.jpf.symbc.numeric.Operator;
+import starlib.formula.Formula;
+import starlib.formula.HeapFormula;
+import starlib.formula.PureFormula;
+import starlib.formula.Variable;
+import starlib.formula.expression.BinaryExpression;
+import starlib.formula.expression.Comparator;
+import starlib.formula.expression.Expression;
+import starlib.formula.expression.LiteralExpression;
+import starlib.formula.expression.NullExpression;
+import starlib.formula.expression.Operator;
+import starlib.formula.heap.HeapTerm;
+import starlib.formula.heap.InductiveTerm;
+import starlib.formula.heap.PointToTerm;
+import starlib.formula.pure.ComparisonTerm;
+import starlib.formula.pure.PureTerm;
 }
 
 // parser
@@ -185,59 +194,9 @@ pureTerms returns [PureFormula pFormula]:
 ;
 
 pureTerm returns [PureTerm term]: 
-	eqNullTerm
-	{
-		$term = $eqNullTerm.term;
-	}
-	| neNullTerm
-	{
-		$term = $neNullTerm.term;
-	}
-	| eqTerm
-	{
-		$term = $eqTerm.term;
-	}
-	| neTerm
-	{
-		$term = $neTerm.term;
-	}
-	| comparisonTerm
+	comparisonTerm
 	{
 		$term = $comparisonTerm.term;
-	}
-;
-
-eqNullTerm returns [PureTerm term] : ID EQ NULL
-	{
-		Variable var = new Variable($ID.text, "");
-		
-		$term = new EqNullTerm(var);
-	}
-;
-
-neNullTerm returns [PureTerm term] : ID NE NULL
-	{
-		Variable var = new Variable($ID.text, "");
-		
-		$term = new NEqNullTerm(var);
-	}
-;
-
-eqTerm returns [PureTerm term] : var1=ID EQ var2=ID
-	{
-		Variable var1 = new Variable($var1.text, "");
-		Variable var2 = new Variable($var2.text, "");
-		
-		$term = new EqTerm(var1, var2);
-	}
-;
-
-neTerm returns [PureTerm term] : var1=ID NE var2=ID
-	{
-		Variable var1 = new Variable($var1.text, "");
-		Variable var2 = new Variable($var2.text, "");
-		
-		$term = new NEqTerm(var1, var2);
 	}
 ;
 
@@ -293,26 +252,30 @@ exp returns [Expression e] :
 	{
 		$e = $ter.e;
 	}
+	| NULL
+	{	
+		$e = NullExpression.getInstance();
+	}
 ;
 	
 ter returns [Expression e] :
 	var1=ID MUL var2=ID
 	{
-		Expression exp1 = new VariableExpression(new Variable($var1.text, ""));
-		Expression exp2 = new VariableExpression(new Variable($var2.text, ""));
+		Expression exp1 = new Variable($var1.text);
+		Expression exp2 = new Variable($var2.text);
 		
 		$e = new BinaryExpression(Operator.MUL, exp1, exp2);
 	}
 	| var1=ID DIV var2=ID
 	{
-		Expression exp1 = new VariableExpression(new Variable($var1.text, ""));
-		Expression exp2 = new VariableExpression(new Variable($var2.text, ""));
+		Expression exp1 = new Variable($var1.text);
+		Expression exp2 = new Variable($var2.text);
 	
 		$e = new BinaryExpression(Operator.DIV, exp1, exp2);
 	}
 	| ID
 	{
-		$e = new VariableExpression(new Variable($ID.text, ""));
+		$e = new Variable($ID.text);
 	}
 	| INT
 	{
