@@ -8,7 +8,8 @@ import java.util.Map;
 import starlib.formula.Utilities;
 import starlib.formula.Variable;
 
-public class VariableExpression extends Expression {
+@Deprecated
+public class VariableExpression implements Expression {
 	
 	private Variable var;
 	

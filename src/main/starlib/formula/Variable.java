@@ -1,24 +1,39 @@
 package starlib.formula;
 
-public class Variable {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import starlib.formula.expression.Expression;
+
+public class Variable implements Expression{
 	
 	private String name;
 	
 	private String type;
 	
+	private ArrayList<Variable> lazyGetVars;
+
 	public Variable(String name) {
 		this.name = name;
 		this.type = ""; // unknown type
+		this.lazyGetVars = new ArrayList<Variable>();
+		this.lazyGetVars.add(this);
 	}
 	
 	public Variable(String name, String type) {
 		this.name = name;
 		this.type = type;
+		this.lazyGetVars = new ArrayList<Variable>();
+		this.lazyGetVars.add(this);
 	}
 	
 	public Variable(Variable var) {
 		this.name = var.getName();
 		this.type = var.getType();
+		this.lazyGetVars = new ArrayList<Variable>();
+		this.lazyGetVars.add(this);
 	}
 	
 	public String getName() {
@@ -82,6 +97,42 @@ public class Variable {
 	@Override 
 	public int hashCode() {
 		return name.hashCode();
+	}
+
+	@Override
+	public List<Variable> getVars() {
+		return lazyGetVars;
+	}
+
+	@Override
+	public Expression substitute(Variable[] fromVars, Variable[] toVars, Map<String, String> existVarSubMap) {
+		
+		int index = Utilities.find(fromVars, this);
+		Variable newVar = null;
+
+		if (index != -1) {
+			newVar = new Variable(toVars[index]);
+		} else if (existVarSubMap == null) {
+			newVar = this;
+		} else {
+			if (existVarSubMap.containsKey(name)) {
+				newVar = new Variable(existVarSubMap.get(name), type);
+			} else {
+				Variable freshVar = Utilities.freshVar(this);
+				existVarSubMap.put(name, freshVar.getName());
+				newVar = new Variable(freshVar);
+			}
+		}
+
+		return newVar;
+	}
+
+	@Override
+	public void updateType(HashMap<String, String> knownTypeVars) {
+		String type = knownTypeVars.get(name);
+		if (type != null) {
+			this.type = type;
+		}
 	}
 
 }

@@ -1,10 +1,13 @@
 package starlib.formula.expression;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import starlib.formula.Variable;
 
-public class LiteralExpression extends Expression {
+public class LiteralExpression implements Expression {
 	
 	private String value;
 	
@@ -29,6 +32,17 @@ public class LiteralExpression extends Expression {
 	@Override
 	public String toString() {
 		return value;
+	}
+
+	@Override
+	public List<Variable> getVars() {
+		// return empty list
+		return new ArrayList<Variable>();
+	}
+
+	@Override
+	public void updateType(HashMap<String, String> knownTypeVars) {
+		// Do nothing
 	}
 
 }

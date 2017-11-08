@@ -6,7 +6,7 @@ import java.util.Map;
 
 import starlib.formula.Variable;
 
-public class UnaryExpression extends Expression {
+public class UnaryExpression implements Expression {
 	
 	private Operator op;
 	

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import starlib.formula.Variable;
 
-public class BinaryExpression extends Expression {
+public class BinaryExpression implements Expression {
 
 	private Operator op;
 	
