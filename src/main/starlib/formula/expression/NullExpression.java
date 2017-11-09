@@ -25,7 +25,7 @@ public class NullExpression implements Expression{
 
 	@Override
 	public Expression substitute(Variable[] fromVars, Variable[] toVars, Map<String, String> existVarSubMap) {
-		return null;
+		return INSTANCE;
 	}
 
 	@Override

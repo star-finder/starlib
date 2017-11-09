@@ -30,7 +30,7 @@ public class LiteralExpression implements Expression {
 	@Override
 	public Expression substitute(Variable[] fromVars, Variable[] toVars,
 			Map<String,String> existVarSubMap) {
-		return new LiteralExpression(value);
+		return this;
 	}
 	
 	@Override
