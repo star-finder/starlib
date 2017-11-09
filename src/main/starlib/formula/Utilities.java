@@ -56,6 +56,10 @@ public class Utilities {
 		count = 1;
 	}
 	
+	public static boolean isNull(Formula pc, Variable var) {
+		return isNull(pc,var.getName());
+	}
+	
 	public static boolean isNull(Formula pc, String varName) {
 		Set<String> alias = pc.getAlias("null");
 

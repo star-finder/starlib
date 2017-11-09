@@ -1,12 +1,12 @@
 package starlib.formula.expression;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import starlib.formula.Variable;
 
-public class BinaryExpression implements Expression {
+public class BinaryExpression extends Expression {
 
 	private Operator op;
 	
@@ -21,13 +21,11 @@ public class BinaryExpression implements Expression {
 	}
 	
 	@Override
-	public List<Variable> getVars() {
-		List<Variable> vars1 = exp1.getVars();
-		List<Variable> vars2 = exp2.getVars();
+	public Set<Variable> getVars() {
+		Set<Variable> vars1 = exp1.getVars();
+		Set<Variable> vars2 = exp2.getVars();
 		
-		for (Variable var : vars2) {
-			if (!vars1.contains(var)) vars1.add(var);
-		}
+		vars1.addAll(vars2);
 		
 		return vars1;
 	}

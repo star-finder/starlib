@@ -1,33 +1,21 @@
 package starlib.formula.expression;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import starlib.formula.Variable;
 
-public interface Expression {
+public abstract class Expression {
 	
-	public List<Variable> getVars();
+	protected static final Set<Variable> EMPTY_SET = new HashSet<Variable>();
 	
-	public Expression substitute(Variable[] fromVars, Variable[] toVars,
+	public abstract Set<Variable> getVars();
+	
+	public abstract Expression substitute(Variable[] fromVars, Variable[] toVars,
 			Map<String,String> existVarSubMap);
 	
-	public void updateType(HashMap<String, String> knownTypeVars);
-	
-	/*
-	public List<Variable> getVars() {
-		return new ArrayList<Variable>();
-	}
-	
-	public Expression substitute(Variable[] fromVars, Variable[] toVars,
-			Map<String,String> existVarSubMap) {
-		return null;
-	}
-	
-	public void updateType(HashMap<String, String> knownTypeVars) {
-		return;
-	}
-	//*/
+	public abstract void updateType(HashMap<String, String> knownTypeVars);
 
 }

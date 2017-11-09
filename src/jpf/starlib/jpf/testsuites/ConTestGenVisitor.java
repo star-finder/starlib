@@ -1,11 +1,10 @@
 package starlib.jpf.testsuites;
 
-import java.util.List;
+import java.util.Set;
 
 import starlib.formula.Variable;
 import starlib.formula.expression.Comparator;
 import starlib.formula.expression.Expression;
-import starlib.formula.expression.VariableExpression;
 import starlib.formula.heap.PointToTerm;
 import starlib.formula.pure.ComparisonTerm;
 import starlib.formula.pure.EqNullTerm;
@@ -76,8 +75,8 @@ public class ConTestGenVisitor extends TestGenVisitor {
 		Expression exp1 = term.getExp1();
 		Expression exp2 = term.getExp2();
 		
-		List<Variable> vars1 = exp1.getVars();
-		List<Variable> vars2 = exp2.getVars();
+		Set<Variable> vars1 = exp1.getVars();
+		Set<Variable> vars2 = exp2.getVars();
 		
 		if (comp == Comparator.EQ && exp1 instanceof Variable && 
 				!initVars.containsAll(vars1) && (vars2.isEmpty() || initVars.containsAll(vars2))) {
@@ -101,6 +100,8 @@ public class ConTestGenVisitor extends TestGenVisitor {
 				test.append("\t\t" + name.replace(clsName + "_", clsName + ".") + " = " + value + ";\n");
 			else
 				test.append("\t\t" + type + " " + name + " = " + value + ";\n");
+			
+			System.out.println("Reach here 1 ================");
 		}
 		
 		if (comp == Comparator.EQ && exp2 instanceof Variable && 
@@ -125,6 +126,9 @@ public class ConTestGenVisitor extends TestGenVisitor {
 				test.append("\t\t" + name.replace(clsName + "_", clsName + ".") + " = " + value + ";\n");
 			else
 				test.append("\t\t" + type + " " + name + " = " + value + ";\n");
+			
+			System.out.println("Reach here 2 ================");
+
 		}
 	}
 	

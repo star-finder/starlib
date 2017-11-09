@@ -13,14 +13,6 @@ import starlib.formula.pure.NEqTerm;
 
 public class StarVisitor {
 
-	public void visit(NEqTerm term) {}
-	
-	public void visit(EqNullTerm term) {}
-	
-	public void visit(NEqNullTerm term) {}
-	
-	public void visit(EqTerm term) {}
-	
 	public void visit(ComparisonTerm term) {}
 	
 	public void visit(HeapTerm term) {}
@@ -32,4 +24,18 @@ public class StarVisitor {
 	public void visit(HeapFormula formula) {}
 	
 	public void visit(PureFormula formula) {}
+	
+	// TODO: delete
+	
+	@Deprecated
+	public void visit(NEqTerm term) {}
+	
+	@Deprecated
+	public void visit(EqNullTerm term) {}
+	
+	@Deprecated
+	public void visit(NEqNullTerm term) {}
+	
+	@Deprecated
+	public void visit(EqTerm term) {}
 }

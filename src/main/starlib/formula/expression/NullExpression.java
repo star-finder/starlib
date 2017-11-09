@@ -1,13 +1,12 @@
 package starlib.formula.expression;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import starlib.formula.Variable;
 
-public class NullExpression implements Expression{
+public class NullExpression extends Expression{
 
 	private static final NullExpression INSTANCE = new NullExpression();
 	
@@ -18,9 +17,9 @@ public class NullExpression implements Expression{
 	}
 	
 	@Override
-	public List<Variable> getVars() {
+	public Set<Variable> getVars() {
 		// return empty list
-		return new ArrayList<Variable>();
+		return EMPTY_SET;
 	}
 
 	@Override

@@ -1,16 +1,15 @@
 package starlib.formula.expression;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import starlib.formula.Variable;
 
-public class LiteralExpression implements Expression {
+public class LiteralExpression extends Expression {
 	
 	private String value;
-	
+		
 	public LiteralExpression(int value) {
 		this.value = Integer.toString(value);
 	}
@@ -39,9 +38,9 @@ public class LiteralExpression implements Expression {
 	}
 
 	@Override
-	public List<Variable> getVars() {
+	public Set<Variable> getVars() {
 		// return empty list
-		return new ArrayList<Variable>();
+		return EMPTY_SET;
 	}
 
 	@Override

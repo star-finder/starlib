@@ -1,12 +1,12 @@
 package starlib.formula.expression;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import starlib.formula.Variable;
 
-public class UnaryExpression implements Expression {
+public class UnaryExpression extends Expression {
 	
 	private Operator op;
 	
@@ -17,7 +17,8 @@ public class UnaryExpression implements Expression {
 		this.exp = exp;
 	}
 	
-	public List<Variable> getVars() {
+	@Override
+	public Set<Variable> getVars() {
 		return exp.getVars();
 	}
 	

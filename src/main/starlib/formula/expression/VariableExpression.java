@@ -1,15 +1,15 @@
 package starlib.formula.expression;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import starlib.formula.Utilities;
 import starlib.formula.Variable;
 
 @Deprecated
-public class VariableExpression implements Expression {
+public class VariableExpression extends Expression {
 	
 	private Variable var;
 	
@@ -25,8 +25,8 @@ public class VariableExpression implements Expression {
 		return var;
 	}
 	
-	public List<Variable> getVars() {
-		List<Variable> vars = new ArrayList<Variable>();
+	public Set<Variable> getVars() {
+		Set<Variable> vars = new HashSet<Variable>();
 		vars.add(var);
 		
 		return vars;

@@ -2,38 +2,40 @@ package starlib.formula;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import starlib.formula.expression.Expression;
 import starlib.formula.expression.NullExpression;
 
-public class Variable implements Expression{
+public class Variable extends Expression{
 	
 	private String name;
 	
 	private String type;
 	
-	private ArrayList<Variable> lazyGetVars;
+	private Set<Variable> lazyGetVars;
 
 	public Variable(String name) {
 		this.name = name;
 		this.type = ""; // unknown type
-		this.lazyGetVars = new ArrayList<Variable>();
+		this.lazyGetVars = new HashSet<Variable>();
 		this.lazyGetVars.add(this);
 	}
 	
 	public Variable(String name, String type) {
 		this.name = name;
 		this.type = type;
-		this.lazyGetVars = new ArrayList<Variable>();
+		this.lazyGetVars = new HashSet<Variable>();
 		this.lazyGetVars.add(this);
 	}
 	
 	public Variable(Variable var) {
 		this.name = var.getName();
 		this.type = var.getType();
-		this.lazyGetVars = new ArrayList<Variable>();
+		this.lazyGetVars = new HashSet<Variable>();
 		this.lazyGetVars.add(this);
 	}
 	
@@ -101,7 +103,7 @@ public class Variable implements Expression{
 	}
 
 	@Override
-	public List<Variable> getVars() {
+	public Set<Variable> getVars() {
 		return lazyGetVars;
 	}
 
