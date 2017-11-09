@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import starlib.formula.expression.Expression;
+import starlib.formula.expression.NullExpression;
 
 public class Variable implements Expression{
 	
@@ -108,7 +109,7 @@ public class Variable implements Expression{
 	public Expression substitute(Variable[] fromVars, Variable[] toVars, Map<String, String> existVarSubMap) {
 		
 		int index = Utilities.find(fromVars, this);
-		Variable newVar = null;
+		Expression newVar = NullExpression.getInstance();
 
 		if (index != -1) {
 			newVar = new Variable(toVars[index]);

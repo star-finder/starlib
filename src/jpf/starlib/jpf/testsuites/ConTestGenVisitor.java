@@ -79,9 +79,9 @@ public class ConTestGenVisitor extends TestGenVisitor {
 		List<Variable> vars1 = exp1.getVars();
 		List<Variable> vars2 = exp2.getVars();
 		
-		if (comp == Comparator.EQ && exp1 instanceof VariableExpression && 
+		if (comp == Comparator.EQ && exp1 instanceof Variable && 
 				!initVars.containsAll(vars1) && (vars2.isEmpty() || initVars.containsAll(vars2))) {
-			Variable var = ((VariableExpression) exp1).getVar();
+			Variable var = (Variable) exp1;
 			initVars.add(var);
 			
 			String name = var.getName();
@@ -103,9 +103,9 @@ public class ConTestGenVisitor extends TestGenVisitor {
 				test.append("\t\t" + type + " " + name + " = " + value + ";\n");
 		}
 		
-		if (comp == Comparator.EQ && exp2 instanceof VariableExpression && 
+		if (comp == Comparator.EQ && exp2 instanceof Variable && 
 				!initVars.containsAll(vars2) && (vars1.isEmpty() || initVars.containsAll(vars1))) {
-			Variable var = ((VariableExpression) exp2).getVar();
+			Variable var = (Variable) exp2;
 			initVars.add(var);
 			
 			String name = var.getName();
