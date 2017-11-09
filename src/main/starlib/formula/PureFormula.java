@@ -90,11 +90,13 @@ public class PureFormula {
 	}
 	
 	public void printAliasMap() {
+		System.out.println(">>>>> Start alias map");
 		for(Set<String> alias : aliasMap.values()) {
-			System.out.println("----------------------------------------");
+			System.out.println("\n----------------------------------------");
 			for(String var : alias)
 				System.out.print(var + " ");
 		}
+		System.out.println("\n>>>>> End alias map");
 	}
 	
 	public PureFormula substitute(Variable[] fromVars, Variable[] toVars,

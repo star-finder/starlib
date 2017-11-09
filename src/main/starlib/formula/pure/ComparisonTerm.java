@@ -37,8 +37,8 @@ public class ComparisonTerm extends PureTerm {
 	@Override
 	public PureTerm substitute(Variable[] fromVars, Variable[] toVars,
 			Map<String,String> existVarSubMap) {
-		Expression newExp1 = (exp1 == null) ? null : exp1.substitute(fromVars, toVars, existVarSubMap);
-		Expression newExp2 = (exp2 == null) ? null : exp2.substitute(fromVars, toVars, existVarSubMap);
+		Expression newExp1 = exp1.substitute(fromVars, toVars, existVarSubMap);
+		Expression newExp2 = exp2.substitute(fromVars, toVars, existVarSubMap);
 		
 		ComparisonTerm newTerm = new ComparisonTerm(comp, newExp1, newExp2);
 		

@@ -228,7 +228,6 @@ public class Formula {
 	}
 	
 	public void putAddress(String name, int address) {
-		System.out.println("Put address: " + name + " -> " + address);
 		addressMap.put(name, address);
 	}
 	
