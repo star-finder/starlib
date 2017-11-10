@@ -16,6 +16,7 @@ import starlib.formula.Variable;
 
 public class PathFinderUtils {
 	
+	@Deprecated
 	public static boolean isInstanceVariable(Variable var, FieldInfo[] fields) {
 		for (FieldInfo field : fields) {
 			String fname = "this_" + field.getName();
@@ -26,6 +27,7 @@ public class PathFinderUtils {
 		return false;
 	}
 
+	@Deprecated
 	public static boolean isClassVariable(Variable var, String clsName, FieldInfo[] fields) {
 		for (FieldInfo field : fields) {
 			String fname = clsName + "_" + field.getName();
@@ -36,6 +38,7 @@ public class PathFinderUtils {
 		return false;
 	}
 	
+	@Deprecated
 	public static String standardizeName(Variable var, String objName, String clsName,
 			FieldInfo[] insFields, FieldInfo[] staFields) {
 		String name = var.getName();

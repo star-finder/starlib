@@ -10,7 +10,6 @@ import starlib.formula.HeapFormula;
 import starlib.formula.PureFormula;
 import starlib.formula.Variable;
 import starlib.formula.heap.HeapTerm;
-import starlib.jpf.PathFinderUtils;
 
 public class TestGenVisitor extends InitVarsVisitor {
 	
@@ -56,31 +55,17 @@ public class TestGenVisitor extends InitVarsVisitor {
 		if (knownTypeVars.size() == initVars.size())
 			return;
 		
-		// for (Variable var : knownTypeVars) {
 		for(Entry<String, String> entry : knownTypeVars.entrySet()) {
 			String name = entry.getKey(); // name is key, type is value
-			String type = entry.getValue();
-			Variable var = new Variable(name,type);
-			
 			if (name.startsWith("Anon_")) continue;
-				
+			String type = entry.getValue();
+			Variable var = new Variable(name,type);				
 			if (!initVars.contains(var)) {
 				if (var.isPrim()) {
-					String val = type.equals("boolean") ? "false" : "0";
-					
-					if (PathFinderUtils.isInstanceVariable(var, insFields))
-						test.append("\t\t" + name.replace("this_", objName + ".") + " = " + val + ";\n");
-					else if (PathFinderUtils.isClassVariable(var, clsName, staFields))
-						test.append("\t\t" + name.replace(clsName + "_", clsName + ".") + " = " + val + ";\n");
-					else
-						test.append("\t\t" + type + " " + name + " = " + val + ";\n");
+					String val = type.equals("boolean") ? "false" : "0";					
+					test.append(makeDeclAndInit(var,val));
 				} else {
-					if (PathFinderUtils.isInstanceVariable(var, insFields))
-						test.append("\t\t" + name.replace("this_", objName + ".") + " = null;\n");
-					else if (PathFinderUtils.isClassVariable(var, clsName, staFields))
-						test.append("\t\t" + name.replace(clsName + "_", clsName + ".") + " = null;\n");
-					else
-						test.append("\t\t" + type + " " + name + " = null;\n");
+					test.append(makeDeclAndInit(var,"null"));
 				}
 			}
 		}
