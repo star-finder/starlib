@@ -99,38 +99,4 @@ public class InitVarsVisitor extends StarVisitor {
 		return classVars.contains(var.getName());
 	}
 	
-	public String standardizeName(Variable var) {
-		String name = var.getName();
-		
-		if (isInstanceVariable(var))
-			name = name.replace("this_", objName + ".");
-		else if (isClassVariable(var))
-			name = name.replace(clsName + "_", clsName + ".");
-		
-		return name;
-	}
-	
-	/*
-	 * Generate the declaration for this variable
-	 */
-	public String makeDeclaration(Variable var) {
-		String name = var.getName();
-		
-		if (isInstanceVariable(var))
-			name = name.replace("this_", objName + ".");
-		else if (isClassVariable(var))
-			name = name.replace(clsName + "_", clsName + ".");
-		else 
-			name = var.getType() + " " + name;
-		
-		return name;
-	}
-	
-	public String makeDeclAndInit(Variable var, String value) {
-		return "\t\t" + makeDeclaration(var) + " = " + value + ";\n";
-	}
-
-	public String makeDeclAndInitWithConstructor(Variable var) {
-		return makeDeclAndInit(var,"new " + var.getType() + "()");
-	}
 }
