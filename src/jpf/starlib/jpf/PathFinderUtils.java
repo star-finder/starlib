@@ -12,44 +12,8 @@ import gov.nasa.jpf.vm.LocalVarInfo;
 import gov.nasa.jpf.vm.MethodInfo;
 import gov.nasa.jpf.vm.StackFrame;
 import gov.nasa.jpf.vm.ThreadInfo;
-import starlib.formula.Variable;
 
 public class PathFinderUtils {
-	
-	@Deprecated
-	public static boolean isInstanceVariable(Variable var, FieldInfo[] fields) {
-		for (FieldInfo field : fields) {
-			String fname = "this_" + field.getName();
-			if (fname.equals(var.toString()))
-				return true;
-		}
-
-		return false;
-	}
-
-	@Deprecated
-	public static boolean isClassVariable(Variable var, String clsName, FieldInfo[] fields) {
-		for (FieldInfo field : fields) {
-			String fname = clsName + "_" + field.getName();
-			if (fname.equals(var.toString()))
-				return true;
-		}
-
-		return false;
-	}
-	
-	@Deprecated
-	public static String standardizeName(Variable var, String objName, String clsName,
-			FieldInfo[] insFields, FieldInfo[] staFields) {
-		String name = var.getName();
-		
-		if (isInstanceVariable(var,insFields))
-			name = name.replace("this_", objName + ".");
-		else if (isClassVariable(var,clsName, staFields))
-			name = name.replace(clsName + "_", clsName + ".");
-		
-		return name;
-	}
 	
 	public static void printErrorDetails(Search search) {
 		System.out.println(search.getLastError().getDetails() + "\n");
@@ -71,8 +35,8 @@ public class PathFinderUtils {
 		HashMap<String, String> knownTypeVars = new HashMap<String, String>();
 		
 		for (LocalVarInfo arg : args) {
-			if (!arg.getName().equals("this")) {				
-				String name = arg.getName();
+			String name = arg.getName();
+			if (!name.equals("this")) {				
 				String type = toJavaType(arg.getType());
 				
 				knownTypeVars.put(name, type);

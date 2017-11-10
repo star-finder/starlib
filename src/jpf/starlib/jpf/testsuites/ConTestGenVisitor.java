@@ -54,7 +54,7 @@ public class ConTestGenVisitor extends TestGenVisitor {
 				return;
 			}
 			if (isVar1 && exp2 instanceof NullExpression) {
-				// former EqTerm
+				// former EqNullTerm
 				Variable var1 = (Variable) exp1;
 				if (!initVars.contains(var1)) {
 					initVars.add(var1);

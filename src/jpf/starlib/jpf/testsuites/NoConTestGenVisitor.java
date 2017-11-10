@@ -49,7 +49,7 @@ public class NoConTestGenVisitor extends TestGenVisitor {
 			Variable var1 = (Variable) exp1;
 			Variable var2 = (Variable) exp2;
 			
-			// TODO: refactor
+			// TODO: re-factor
 			// Start copying from ConTestGenVisitor
 			boolean constains1 = initVars.contains(var1);
 			boolean constains2 = initVars.contains(var2);
@@ -73,15 +73,6 @@ public class NoConTestGenVisitor extends TestGenVisitor {
 				initVars.add(var2);
 				test.append(makeDeclAndInitWithConstructor(var1));
 				test.append(makeDeclAndInit(var2, standardizeName(var1)));
-				
-				if(var2.getType().equals("")) {
-					var2.setType(var1.getType());
-					System.out.println(">>>>>" + var1.getType() + "->" + var1 + " = " + var2);
-				}
-				
-				if(var1.getType().equals("")) {
-					System.out.println(">>>>> Haha" + var1.getType() + "->" + var1 + " = " + var2);
-				}
 			}
 		}
 	}
