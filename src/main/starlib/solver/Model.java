@@ -1,8 +1,53 @@
 package starlib.solver;
 
-public class Model {
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
 
-	public static String standardizeModel(String model) {
+import starlib.formula.Formula;
+import starlib.precondition.Precondition;
+import starlib.precondition.PreconditionLexer;
+import starlib.precondition.PreconditionParser;
+
+public class Model {
+	
+	private Formula f;
+	private String pure;
+	
+	public Model(String model) {
+		model = model.replaceAll("FLOAT 0.", "0");
+		String[] tmp = model.split(";");
+		
+		model = tmp[0];
+		pure = tmp[1];
+		
+		if (pure.contains("Sat")) {
+			pure = pure.substring(tmp[1].indexOf('[') + 1, tmp[1].length() - 1);
+			pure = pure.replaceAll("\\),", ");");
+		} else {
+			pure = "";
+		}
+					
+		model = standardizeModel(model);
+		model = "pre temp == " + model;
+		
+		ANTLRInputStream in = new ANTLRInputStream(model);
+		PreconditionLexer lexer = new PreconditionLexer(in);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        PreconditionParser parser = new PreconditionParser(tokens);
+        
+        Precondition[] ps = parser.pres().ps;
+        f = ps[0].getFormula();
+	}
+
+	public Formula getFormula() {
+		return f;
+	}
+	
+	public String getPure() {
+		return pure;
+	}
+
+	public String standardizeModel(String model) {
 		String ret = model;
 		
 		ret = ret.substring(8, model.length());
