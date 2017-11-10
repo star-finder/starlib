@@ -46,17 +46,42 @@ public class NoConTestGenVisitor extends TestGenVisitor {
 		
 		//EqTerm
 		if(comp == Comparator.EQ && isVar1 && isVar2) {
-			// FIXME: check old code before renaming
-			super.visit(term);
-			
 			Variable var1 = (Variable) exp1;
 			Variable var2 = (Variable) exp2;
 			
-			if (!initVars.contains(var1) && !initVars.contains(var2)) {
+			// TODO: refactor
+			// Start copying from ConTestGenVisitor
+			boolean constains1 = initVars.contains(var1);
+			boolean constains2 = initVars.contains(var2);
+			
+			if (!constains1 && constains2) {
+				initVars.add(var1);
+				String name2 = standardizeName(var2);			
+				test.append(makeDeclAndInit(var1,name2));
+			}
+			
+			if (constains1 && !constains2) {
+				initVars.add(var2);
+				String name1 = standardizeName(var1);
+				test.append(makeDeclAndInit(var2,name1));
+			}
+			// End copying from ConTestGenVisitor
+			
+			
+			if (!constains1 && !constains2) {
 				initVars.add(var1);
 				initVars.add(var2);
-				test.append(makeDeclAndInit(var1,"new " + var1.getType() + "()"));
+				test.append(makeDeclAndInitWithConstructor(var1));
 				test.append(makeDeclAndInit(var2, standardizeName(var1)));
+				
+				if(var2.getType().equals("")) {
+					var2.setType(var1.getType());
+					System.out.println(">>>>>" + var1.getType() + "->" + var1 + " = " + var2);
+				}
+				
+				if(var1.getType().equals("")) {
+					System.out.println(">>>>> Haha" + var1.getType() + "->" + var1 + " = " + var2);
+				}
 			}
 		}
 	}

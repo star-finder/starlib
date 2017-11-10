@@ -47,6 +47,24 @@ public class ComparisonTerm extends PureTerm {
 	
 	@Override
 	public void updateType(HashMap<String, String> knownTypeVars) {
+		if(exp1 instanceof Variable && exp2 instanceof Variable) {
+			// TODO: Handle polymorphism. At the moment, we assume that both
+			// LHS and RHS have the same type
+			String name1 = exp1.toString();
+			String name2 = exp2.toString();
+			String type1 = knownTypeVars.get(name1);
+			String type2 = knownTypeVars.get(name2);
+			String type = type1 != null? type1: type2;
+			if(type != null) {
+				// TODO: becareful when handling polymorphism
+				((Variable)exp1).setType(type);
+				((Variable)exp2).setType(type);
+				if(type1 == null) 
+					knownTypeVars.put(name1, type);
+				if(type2 == null) 
+					knownTypeVars.put(name2, type);
+			}
+		}
 		exp1.updateType(knownTypeVars);
 		exp2.updateType(knownTypeVars);
 	}

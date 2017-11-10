@@ -8,9 +8,6 @@ import starlib.formula.expression.Expression;
 import starlib.formula.expression.NullExpression;
 import starlib.formula.heap.PointToTerm;
 import starlib.formula.pure.ComparisonTerm;
-import starlib.formula.pure.EqNullTerm;
-import starlib.formula.pure.EqTerm;
-import starlib.jpf.PathFinderUtils;
 
 public class ConTestGenVisitor extends TestGenVisitor {
 
@@ -34,118 +31,75 @@ public class ConTestGenVisitor extends TestGenVisitor {
 		Comparator comp = term.getComparator();
 		boolean isVar1 = exp1 instanceof Variable;
 		boolean isVar2 = exp2 instanceof Variable;
-		boolean isNull2 = exp2 instanceof NullExpression;
-	
-		//WIP
 		
+		if (comp == Comparator.EQ) {
+			if (isVar1 && isVar2) {
+				// former EqTerm
+				Variable var1 = (Variable) exp1;
+				Variable var2 = (Variable) exp2;
+				boolean constains1 = initVars.contains(var1);
+				boolean constains2 = initVars.contains(var2);
+				
+				if (!constains1 && constains2) {
+					initVars.add(var1);
+					String name2 = standardizeName(var2);			
+					test.append(makeDeclAndInit(var1,name2));
+				}
+				
+				if (constains1 && !constains2) {
+					initVars.add(var2);
+					String name1 = standardizeName(var1);
+					test.append(makeDeclAndInit(var2,name1));
+				}
+				return;
+			}
+			if (isVar1 && exp2 instanceof NullExpression) {
+				// former EqTerm
+				Variable var1 = (Variable) exp1;
+				if (!initVars.contains(var1)) {
+					initVars.add(var1);
+					test.append(makeDeclAndInit(var1,"null"));
+				}
+				return;
+			}
+		}
+
+		// former ComparisonTerm
 		Set<Variable> vars1 = exp1.getVars();
 		Set<Variable> vars2 = exp2.getVars();
+		boolean containsAll1 = initVars.containsAll(vars1);
+		boolean containsAll2 = initVars.containsAll(vars2);
 		
 		if (comp == Comparator.EQ && isVar1 && 
-				!initVars.containsAll(vars1) && (vars2.isEmpty() || initVars.containsAll(vars2))) {
+				!containsAll1 && (vars2.isEmpty() || containsAll2)) {
 			Variable var = (Variable) exp1;
 			initVars.add(var);
 			
-			String name = var.getName();
 			String type = var.getType();
 			String value = exp2.toString();
 			
 			if (type.equals("boolean")) {
-				if (value.equals("0"))
-					value = "false";
-				else
-					value = "true";
+				value = value.equals("0") ? "false" : "true";
 			}
 			
-			if (isInstanceVariable(var))
-				test.append("\t\t" + name.replace("this_", objName + ".") + " = " + value + ";\n");
-			else if (isClassVariable(var))
-				test.append("\t\t" + name.replace(clsName + "_", clsName + ".") + " = " + value + ";\n");
-			else
-				test.append("\t\t" + type + " " + name + " = " + value + ";\n");
-			
+			test.append(makeDeclAndInit(var,value));
 		}
 		
 		if (comp == Comparator.EQ && isVar2 && 
-				!initVars.containsAll(vars2) && (vars1.isEmpty() || initVars.containsAll(vars1))) {
+				!containsAll2 && (vars1.isEmpty() || containsAll1)) {
 			Variable var = (Variable) exp2;
 			initVars.add(var);
 			
-			String name = var.getName();
 			String type = var.getType();
 			String value = exp1.toString();
 			
 			if (type.equals("boolean")) {
-				if (value.equals("0"))
-					value = "false";
-				else
-					value = "true";
+				value = value.equals("0") ? "false" : "true";
 			}
-			
-			if (isInstanceVariable(var))
-				test.append("\t\t" + name.replace("this_", objName + ".") + " = " + value + ";\n");
-			else if (isClassVariable(var))
-				test.append("\t\t" + name.replace(clsName + "_", clsName + ".") + " = " + value + ";\n");
-			else
-				test.append("\t\t" + type + " " + name + " = " + value + ";\n");
-			
-			System.out.println("Reach here 2 ================");
+		
+			test.append(makeDeclAndInit(var,value));
+		}
+	}
+	
 
-		}
-	}
-
-	
-	@Override
-	public void visit(EqTerm term) {
-		Variable var1 = term.getVar1();
-		Variable var2 = term.getVar2();
-		
-		if (initVars.contains(var2) && !initVars.contains(var1)) {
-			initVars.add(var1);
-			
-			String name1 = standardizeName(var1);
-			String name2 = standardizeName(var2);
-			
-			String type = var1.getType();
-			
-			if (isInstanceVariable(var1) || isClassVariable(var1))
-				test.append("\t\t" + name1 + " = " + name2 + ";\n");
-			else
-				test.append("\t\t" + type + " " + name1 + " = " + name2 + ";\n");
-		}
-		
-		if (initVars.contains(var1) && !initVars.contains(var2)) {
-			initVars.add(var2);
-			
-			String name1 = standardizeName(var1);
-			String name2 = standardizeName(var2);
-			
-			String type = var2.getType();
-			
-			if (isInstanceVariable(var2) || isClassVariable(var2))
-				test.append("\t\t" + name2 + " = " + name1 + ";\n");
-			else
-				test.append("\t\t" + type + " " + name2 + " = " + name1 + ";\n");
-		}
-	}
-	
-	
-	@Override
-	public void visit(EqNullTerm term) {
-		Variable var = term.getVar();
-		
-		if (!initVars.contains(var)) {
-			initVars.add(var);
-			
-			String name = var.getName();
-			String type = var.getType();
-			
-			if (isInstanceVariable(var))
-				test.append("\t\t" + name.replace("this_", objName + ".") + " = null;\n");
-			else if (isClassVariable(var))
-				test.append("\t\t" + name.replace(clsName + "_", clsName + ".") + " = null;\n");
-			else
-				test.append("\t\t" + type + " " + name + " = null;\n");
-		}
-	}
 }

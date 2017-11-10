@@ -26,8 +26,7 @@ public class SetFieldsTestGenVisitor extends TestGenVisitor {
 
 		String name0 = standardizeName(vars[0]);
 		for (int i = 1; i < length; i++) {
-			String nameI = vars[i].getName();
-			nameI = standardizeName(vars[i]);
+			String nameI = standardizeName(vars[i]);
 			test.append("\t\t" + name0 + "." + fields[i - 1].getName() + " = " + nameI + ";\n");
 		}
 	}

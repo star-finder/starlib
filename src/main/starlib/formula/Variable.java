@@ -121,9 +121,8 @@ public class Variable extends Expression{
 			if (existVarSubMap.containsKey(name)) {
 				newVar = new Variable(existVarSubMap.get(name), type);
 			} else {
-				Variable freshVar = Utilities.freshVar(this);
-				existVarSubMap.put(name, freshVar.getName());
-				newVar = new Variable(freshVar);
+				newVar = Utilities.freshVar(this);
+				existVarSubMap.put(name, newVar.toString());
 			}
 		}
 

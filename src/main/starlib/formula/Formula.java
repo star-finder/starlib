@@ -94,20 +94,6 @@ public class Formula {
 		return getAliasMap().get(name);
 	}
 	
-	/*
-	public List<Variable> getAlias(String name) {
-		Variable temp = new Variable(name, "");
-		
-		for (List<Variable> vars : getAlias()) {
-			if (vars.contains(temp)) {
-				return vars;
-			}
-		}
-		
-		return null;
-	}
-	//*/
-	
 	public Formula rename(Variable var, Variable[] fields) {
 		HeapTerm ht = Utilities.findHeapTerm(this, var.getName());
 		if (ht instanceof PointToTerm) {
