@@ -78,8 +78,9 @@ public class PointToTerm extends HeapTerm {
 			} else {
 				vars[i].setType(fields[i - 1].getType());
 			}
-			String name = vars[i].getName();
-			knownTypeVars.put(name, vars[i].getType());
+			String newType =  i == 0 ? type.replaceAll("_", ".") : fields[i - 1].getType().replaceAll("_", ".");
+			vars[i].setType(newType);
+			knownTypeVars.put(vars[i].getName(), newType);
 		}
 	}
 	
