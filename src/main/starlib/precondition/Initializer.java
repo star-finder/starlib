@@ -1,6 +1,10 @@
 package starlib.precondition;
 
+import java.io.IOException;
+
+import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import starlib.data.DataNode;
@@ -24,9 +28,18 @@ public class Initializer {
 		DataNodeMap.reset();
 		DataNodeMap.put(dns);
 	}
-
+	
 	public static void initPredicate(String pred) {
-		ANTLRInputStream in = new ANTLRInputStream(pred);
+		CharStream in = new ANTLRInputStream(pred);
+		initPredicate(in);
+	}
+	
+	public static void initPredicateFromFile(String pred) throws IOException {
+		CharStream in = new ANTLRFileStream(pred);
+		initPredicate(in);
+	}
+	
+	private static void initPredicate(CharStream in) {
 		InductivePredLexer lexer = new InductivePredLexer(in);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		InductivePredParser parser = new InductivePredParser(tokens);
