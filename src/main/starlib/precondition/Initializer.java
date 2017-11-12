@@ -2,9 +2,8 @@ package starlib.precondition;
 
 import java.io.IOException;
 
-import org.antlr.v4.runtime.ANTLRFileStream;
-import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import starlib.data.DataNode;
@@ -19,7 +18,7 @@ import starlib.predicate.InductivePredParser;
 public class Initializer {
 
 	public static void initDataNode(String data) {
-		ANTLRInputStream in = new ANTLRInputStream(data);
+		CharStream in = CharStreams.fromString(data);
 		DataNodeLexer lexer = new DataNodeLexer(in);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		DataNodeParser parser = new DataNodeParser(tokens);
@@ -30,12 +29,12 @@ public class Initializer {
 	}
 	
 	public static void initPredicate(String pred) {
-		CharStream in = new ANTLRInputStream(pred);
+		CharStream in = CharStreams.fromString(pred);
 		initPredicate(in);
 	}
 	
-	public static void initPredicateFromFile(String pred) throws IOException {
-		CharStream in = new ANTLRFileStream(pred);
+	public static void initPredicateFromFile(String pred) throws IOException{
+		CharStream in = CharStreams.fromFileName(pred);
 		initPredicate(in);
 	}
 	
@@ -50,7 +49,7 @@ public class Initializer {
 	}
 	
 	public static void initPrecondition(String pre) {		
-		ANTLRInputStream in = new ANTLRInputStream(pre);
+		CharStream in = CharStreams.fromString(pre);
 		PreconditionLexer lexer = new PreconditionLexer(in);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         PreconditionParser parser = new PreconditionParser(tokens);

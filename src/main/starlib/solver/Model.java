@@ -1,6 +1,7 @@
 package starlib.solver;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import starlib.formula.Formula;
@@ -30,7 +31,7 @@ public class Model {
 		model = standardizeModel(model);
 		model = "pre temp == " + model;
 		
-		ANTLRInputStream in = new ANTLRInputStream(model);
+		CharStream in = CharStreams.fromString(model);
 		PreconditionLexer lexer = new PreconditionLexer(in);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         PreconditionParser parser = new PreconditionParser(tokens);
