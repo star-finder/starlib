@@ -170,6 +170,10 @@ public class Solver {
 					}
 				}
 			};
+			
+			if(executor.isShutdown()) {
+				executor = Executors.newSingleThreadExecutor();
+			}
 
 			future = executor.submit(check);
 			
