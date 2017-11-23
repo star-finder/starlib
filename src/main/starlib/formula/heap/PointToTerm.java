@@ -8,7 +8,6 @@ import starlib.data.DataNode;
 import starlib.data.DataNodeMap;
 import starlib.formula.Utilities;
 import starlib.formula.Variable;
-import starlib.jpf.PathFinderUtils;
 
 // x -> Node(...) term
 
@@ -79,7 +78,7 @@ public class PointToTerm extends HeapTerm {
 			} else {
 				vars[i].setType(fields[i - 1].getType());
 			}
-			String newType =  i == 0 ? PathFinderUtils.toBinaryType(type) : PathFinderUtils.toBinaryType(fields[i - 1].getType());
+			String newType =  i == 0 ? Utilities.toBinaryType(type) : Utilities.toBinaryType(fields[i - 1].getType());
 			vars[i].setType(newType);
 			knownTypeVars.put(vars[i].getName(), newType);
 		}

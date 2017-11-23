@@ -133,6 +133,13 @@ public class Utilities {
 	//*/
 	
 	
+	public static String toBinaryType(String type) {
+		type = type.replaceAll("__", "\\$");
+		type = type.replace("_", ".");
+		
+		return type;
+	}	
+	
 	/*
 	public static HeapTerm findHeapTerm(Formula pc, String varName) {
 		HeapFormula hf = pc.getHeapFormula();

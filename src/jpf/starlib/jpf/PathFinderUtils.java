@@ -75,13 +75,6 @@ public class PathFinderUtils {
 		return type;
 	}
 	
-	public static String toBinaryType(String type) {
-		type = type.replaceAll("__", "\\$");
-		type = type.replace("_", ".");
-		
-		return type;
-	}
-	
 //	public static String standardizeType(String type) {
 //		if (type.contains("."))
 //			type = type.substring(type.lastIndexOf('.') + 1);
