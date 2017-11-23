@@ -10,6 +10,7 @@ import starlib.formula.HeapFormula;
 import starlib.formula.PureFormula;
 import starlib.formula.Variable;
 import starlib.formula.heap.HeapTerm;
+import starlib.jpf.PathFinderUtils;
 
 public class TestGenVisitor extends InitVarsVisitor {
 	
@@ -93,7 +94,7 @@ public class TestGenVisitor extends InitVarsVisitor {
 		else if (isClassVariable(var))
 			name = name.replace(clsName + "_", clsName + ".");
 		else 
-			name = var.getType() + " " + name;
+			name = PathFinderUtils.toJavaType(var.getType()) + " " + name;
 		
 		return name;
 	}
@@ -103,7 +104,7 @@ public class TestGenVisitor extends InitVarsVisitor {
 	}
 
 	public String makeDeclAndInitWithConstructor(Variable var) {
-		return makeDeclAndInit(var,"new " + var.getType() + "()");
+		return makeDeclAndInit(var,"new " + PathFinderUtils.toJavaType(var.getType()) + "()");
 	}
 	
 }

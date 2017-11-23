@@ -37,47 +37,48 @@ public class PathFinderUtils {
 		for (LocalVarInfo arg : args) {
 			String name = arg.getName();
 			if (!name.equals("this")) {				
-				String type = toJavaType(arg.getType());
+//				String type = toJavaType(arg.getType());
+				String type = arg.getType();
 				knownTypeVars.put(name, type);
 			}
 		}
 		
 		for (FieldInfo field : insFields) {
 			String name = "this_" + field.getName();
-			String type = toJavaType(field.getType());
+//			String type = toJavaType(field.getType());
+			String type = field.getType();
 			knownTypeVars.put(name, type);
 		}
 		
 		for (FieldInfo field : staFields) {
 			String name = clsName + "_" + field.getName();
-			String type = toS2SATType(field.getType());
+//			String type = toJavaType(field.getType());
+			String type = field.getType();
 			knownTypeVars.put(name, type);
 		}
 		return knownTypeVars;
 	}
 	
 	public static String toS2SATType(String type) {
-		/*
-		if (type.contains("."))
-			type = type.replaceAll("\\.", "_");
+		type = type.replaceAll("\\.", "_");
+		type = type.replaceAll("\\$", "__");
 		
-		if (type.contains("$"))
-			type = type.replaceAll("$", "_");
-		//*/
-		type = type.replace("\\.", "_");
-		type = type.replace("$", "_");
 		return type;
 	}
 	
 	public static String toJavaType(String type) {
 		// Sang: Java type couldn't be referenced using its binary name $$
-//		if (type.contains("__"))
-//			type = type.replaceAll("__", "$$");
+		type = type.replaceAll("__", ".");
+		type = type.replaceAll("_", ".");
+		type = type.replaceAll("\\$", ".");
 		
-//		if (type.contains("_"))
-//			type = type.replaceAll("_", ".");
+		return type;
+	}
+	
+	public static String toBinaryType(String type) {
+		type = type.replaceAll("__", "\\$");
 		type = type.replace("_", ".");
-		type = type.replace("$", ".");
+		
 		return type;
 	}
 	
