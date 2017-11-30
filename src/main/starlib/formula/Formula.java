@@ -284,6 +284,21 @@ public class Formula {
 			return heapString + " & " + pureString;
 	}
 	
+	@Override
+	public boolean equals(Object other) {
+		if (this == other)
+			return true;
+		else if (!(other instanceof Formula))
+			return false;
+		else
+			return this.toString().equals(other.toString());
+	}
+	
+	@Override 
+	public int hashCode() {
+		return this.toString().hashCode();
+	}
+	
 	// Deprecated APIs, should use ComparisonTerms instead of those redundant Terms
 	
 	@Deprecated
