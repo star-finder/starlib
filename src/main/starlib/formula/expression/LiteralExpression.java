@@ -9,6 +9,13 @@ import starlib.formula.Variable;
 public class LiteralExpression extends Expression {
 	
 	private String value;
+	
+	public LiteralExpression(boolean value) {
+		if (value)
+			this.value = "1";
+		else
+			this.value = "0";
+	}
 		
 	public LiteralExpression(int value) {
 		this.value = Integer.toString(value);
@@ -23,7 +30,12 @@ public class LiteralExpression extends Expression {
 	}
 	
 	public LiteralExpression(String value) {
-		this.value = value;
+		if (value.equals("true"))
+			this.value = "1";
+		else if (value.equals("false"))
+			this.value = "0";
+		else
+			this.value = value;
 	}
 	
 	@Override

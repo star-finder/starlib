@@ -51,6 +51,8 @@ public class PathFinderUtils {
 		}
 		
 		for (FieldInfo field : staFields) {
+			if (field.getName().equals("$assertionsDisabled")) continue;
+			
 			String name = clsName + "_" + field.getName();
 //			String type = toJavaType(field.getType());
 			String type = field.getType();
