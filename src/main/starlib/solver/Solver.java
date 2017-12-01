@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import gov.nasa.jpf.Config;
+import starlib.GlobalVariables;
 import starlib.data.DataNode;
 import starlib.data.DataNodeMap;
 import starlib.formula.Formula;
@@ -19,11 +19,7 @@ import starlib.predicate.InductivePred;
 import starlib.predicate.InductivePredMap;
 
 public class Solver {
-
-	private static int MAX_DEPTH = 3;
 	
-	private static int MAX_TIME = 1;
-
 	private static String s2sat = "s2sat";
 
 	private static boolean ret = false;
@@ -47,35 +43,28 @@ public class Solver {
 		//*/
 	}
 	
-	public static boolean checkSat(List<Formula> fs, Config c) {
+	public static boolean checkSat(List<Formula> fs) {
 		for (Formula f : fs) {
-			if (checkSat(f, c)) return true;
+			if (checkSat(f)) return true;
 		}
 		
 		return false;
 	}
 	
-	public static boolean checkSat(Formula f, Config c) {
+	public static boolean checkSat(Formula f) {
 //		System.out.println(f);
 //		System.out.println(f.getDepth());
 		
 		ret = false; model = new StringBuilder();
-		
-		int maxDepth = MAX_DEPTH;
 
-		String s = c.getProperty("star.max_depth");
-		if (s != null) {
-			maxDepth = Integer.parseInt(s);
-		}
-
-		if (f.getDepth() > maxDepth) {
+		if (f.getDepth() > GlobalVariables.MAX_DEPTH) {
 			return false;
 		} else {
 			// return true;
 			File file = printToFile(f);
 			
 			if (file != null) {
-				boolean ret = checkSat(file, c);
+				boolean ret = checkSat(file);
 				return ret;
 			}
 			
@@ -118,7 +107,7 @@ public class Solver {
 
 	
 	
-	private static boolean checkSat(File file, Config c1) {
+	private static boolean checkSat(File file) {
 		try {
 			Future future = null;
 			String cmd = s2sat + " " + file.getAbsolutePath();
@@ -177,14 +166,16 @@ public class Solver {
 
 			future = executor.submit(check);
 			
+			/*
 			int maxTime = MAX_TIME;
 			
 			String s = c.getProperty("star.max_time");
 			if (s != null) {
 				maxTime = Integer.parseInt(s);
 			}
+			//*/
 			
-			future.get(maxTime, TimeUnit.SECONDS);
+			future.get(GlobalVariables.MAX_TIME, TimeUnit.SECONDS);
 
 			return ret;
 		} catch (Exception e) {
