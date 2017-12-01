@@ -118,7 +118,7 @@ public class Solver {
 
 	
 	
-	private static boolean checkSat(File file, Config c) {
+	private static boolean checkSat(File file, Config c1) {
 		try {
 			Future future = null;
 			String cmd = s2sat + " " + file.getAbsolutePath();
@@ -197,50 +197,6 @@ public class Solver {
 
 	public static String getModel() {
 		return model.toString();
-	}
-
-	public static int getMinInt(Config c) {
-		int min = -1000;
-
-		String s = c.getProperty("star.min_int");
-		if (s != null) {
-			min = Integer.parseInt(s);
-		}
-
-		return min;
-	}
-
-	public static int getMaxInt(Config c) {
-		int max = 1000;
-
-		String s = c.getProperty("star.max_int");
-		if (s != null) {
-			max = Integer.parseInt(s);
-		}
-
-		return max;
-	}
-
-	public static long getMinLong(Config c) {
-		long min = -10000;
-
-		String s = c.getProperty("star.min_long");
-		if (s != null) {
-			min = Integer.parseInt(s);
-		}
-
-		return min;
-	}
-
-	public static long getMaxLong(Config c) {
-		long max = 10000;
-
-		String s = c.getProperty("star.max_long");
-		if (s != null) {
-			max = Integer.parseInt(s);
-		}
-
-		return max;
 	}
 
 }
