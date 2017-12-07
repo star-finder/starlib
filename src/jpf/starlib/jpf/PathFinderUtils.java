@@ -48,9 +48,7 @@ public class PathFinderUtils {
 			knownTypeVars.put(name, type);
 		}
 		
-		for (FieldInfo field : staFields) {
-			if (field.isFinal()) continue;
-						
+		for (FieldInfo field : staFields) {						
 			String name = clsName + "_" + field.getName();
 			String type = field.getType();
 			knownTypeVars.put(name, type);
