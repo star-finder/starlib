@@ -96,6 +96,7 @@ public class Formula {
 	
 	public Formula rename(Variable var, Variable[] fields) {
 		HeapTerm ht = Utilities.findHeapTerm(this, var.getName());
+		
 		if (ht instanceof PointToTerm) {
 			Variable[] fromVars = ((PointToTerm) ht).getVarsNoRoot();
 			Variable[] toVars = new Variable[fromVars.length];
@@ -104,10 +105,12 @@ public class Formula {
 				toVars[i] = new Variable(var.getName() + "_" + fields[i].getName(), "");
 			}
 			
-			return this.substitute(fromVars, toVars, null);
-		} else {
-			return this;
+			Formula newFormula = this.substitute(fromVars, toVars, null);
+			heapFormula = newFormula.getHeapFormula();
+			pureFormula = newFormula.getPureFormula();
 		}
+		
+		return this;
 	}
 	
 	// substitute parameters with new vars

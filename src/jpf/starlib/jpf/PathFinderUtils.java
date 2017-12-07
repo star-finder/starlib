@@ -37,7 +37,6 @@ public class PathFinderUtils {
 		for (LocalVarInfo arg : args) {
 			String name = arg.getName();
 			if (!name.equals("this")) {				
-//				String type = toJavaType(arg.getType());
 				String type = arg.getType();
 				knownTypeVars.put(name, type);
 			}
@@ -45,19 +44,18 @@ public class PathFinderUtils {
 		
 		for (FieldInfo field : insFields) {
 			String name = "this_" + field.getName();
-//			String type = toJavaType(field.getType());
 			String type = field.getType();
 			knownTypeVars.put(name, type);
 		}
 		
 		for (FieldInfo field : staFields) {
-			if (field.getName().equals("$assertionsDisabled")) continue;
-			
+			if (field.isFinal()) continue;
+						
 			String name = clsName + "_" + field.getName();
-//			String type = toJavaType(field.getType());
 			String type = field.getType();
 			knownTypeVars.put(name, type);
 		}
+		
 		return knownTypeVars;
 	}
 	
