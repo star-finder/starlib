@@ -1,5 +1,7 @@
 package starlib.jpf.testsuites;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
@@ -15,7 +17,6 @@ import starlib.formula.expression.Comparator;
 import starlib.formula.expression.Expression;
 import starlib.formula.expression.LiteralExpression;
 import starlib.jpf.PathFinderUtils;
-import starlib.jpf.testsuites.TestGenVisitor;
 import starlib.solver.Model;
 
 public class TestGenerator {
@@ -170,6 +171,29 @@ public class TestGenerator {
 		test.append("\n");
 		
 		test.append("public class " + ci.getSimpleName() + "_" + mi.getName() + "1 extends TestJPF {\n\n");
+		
+		addInitTest(test);
+	}
+	
+	private static void addInitTest(StringBuffer test) {
+		String initTest = conf.getProperty("star.test_init");
+		if (initTest == null) return;
+		
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(initTest));
+			String s = br.readLine();
+			
+			while (s != null) {
+				test.append("\t" + s + "\n");
+				s = br.readLine();
+			}
+			
+			test.append("\n");
+			
+			br.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
