@@ -24,6 +24,8 @@ public class Solver {
 
 	private static boolean ret = false;
 	
+	private static boolean retEntail = false;
+	
 	private static StringBuilder model = new StringBuilder();
 	
 	private static Process p = null;
@@ -41,6 +43,115 @@ public class Solver {
 			executor.shutdownNow();
 		}
 		//*/
+	}
+	
+	public static boolean checkEntail(Formula lhs, Formula rhs) {
+		retEntail = false;
+		
+		File file = printToFile(lhs, rhs);
+		
+		if (file != null) {
+			boolean ret = checkEntail(file);
+			return ret;
+		}
+		
+		return false;
+	}
+	
+	private static File printToFile(Formula lhs, Formula rhs) {
+		try {
+			File file = File.createTempFile("entail", null);
+//			System.out.println(file.getAbsolutePath());
+			
+			BufferedWriter bw = new BufferedWriter(new FileWriter(file.getAbsolutePath(), true));
+
+			DataNode[] dns = DataNodeMap.getAll();
+			for (int i = 0; i < dns.length; i++) {
+				String dn = dns[i].toS2SATString();
+				bw.write(dn + "\n");
+			}
+
+			InductivePred[] preds = InductivePredMap.getAll();
+			for (int i = 0; i < preds.length; i++) {
+				String pred = preds[i].toS2SATString();
+				bw.write(pred + "\n");
+			}
+
+			String problem = "checkentail " + lhs.toS2SATString() + " |- " + rhs.toS2SATString() +  ".\n";
+			bw.write(problem);
+
+			bw.flush();
+			bw.close();
+			return file;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	private static boolean checkEntail(File file) {
+		try {
+			Future future = null;
+			String cmd = s2sat + " " + file.getAbsolutePath();
+			
+			Runnable check = new Thread() {
+				@Override
+				public void run() {
+					try {
+						p = Runtime.getRuntime().exec(cmd);
+						
+						BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+						String s = br.readLine();
+						
+						while (s != null) {
+							if (s.contains("Valid")) {
+								retEntail = true;
+								break;
+							}
+							
+							if (s.contains("Fail")) {
+								retEntail = false;
+								break;
+							}
+							
+							s = br.readLine();
+						}
+						
+						br.close();
+						p.waitFor();
+					} catch (Exception e) {
+
+					}
+				}
+			};
+			
+			if(executor.isShutdown()) {
+				executor = Executors.newSingleThreadExecutor();
+			}
+
+			future = executor.submit(check);
+			
+			/*
+			int maxTime = MAX_TIME;
+			
+			String s = c.getProperty("star.max_time");
+			if (s != null) {
+				maxTime = Integer.parseInt(s);
+			}
+			//*/
+			
+			future.get(GlobalVariables.MAX_TIME, TimeUnit.SECONDS);
+
+			return retEntail;
+		} catch (Exception e) {
+			retEntail = false;
+			if (p.isAlive()) p.destroyForcibly();
+				
+			return false;
+		}
 	}
 	
 	public static boolean checkSat(List<Formula> fs) {
@@ -104,8 +215,6 @@ public class Solver {
 
 		return null;
 	}
-
-	
 	
 	private static boolean checkSat(File file) {
 		try {
