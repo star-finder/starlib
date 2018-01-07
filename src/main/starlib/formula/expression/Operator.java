@@ -50,8 +50,8 @@ public enum Operator{
 	SHIFTL(" << "),
 	SHIFTR(" >> "),
 	SHIFTUR(" >>> "),
-	REM(" % ");
-	
+	REM(" % "),
+	SELECT(" <- ");
 	
 	
 	private final String str;

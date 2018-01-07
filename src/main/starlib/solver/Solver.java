@@ -5,7 +5,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -15,6 +20,14 @@ import starlib.GlobalVariables;
 import starlib.data.DataNode;
 import starlib.data.DataNodeMap;
 import starlib.formula.Formula;
+import starlib.formula.PureFormula;
+import starlib.formula.Utilities;
+import starlib.formula.Variable;
+import starlib.formula.heap.HeapTerm;
+import starlib.formula.heap.InductiveTerm;
+import starlib.formula.heap.PointToTerm;
+import starlib.formula.pure.ComparisonTerm;
+import starlib.formula.pure.PureTerm;
 import starlib.predicate.InductivePred;
 import starlib.predicate.InductivePredMap;
 
@@ -151,6 +164,154 @@ public class Solver {
 			if (p.isAlive()) p.destroyForcibly();
 				
 			return false;
+		}
+	}
+	
+	public static List<Formula> preprocess(Formula pre, Formula f) {
+		List<Formula> fs = new ArrayList<Formula>();
+
+		Set<Variable> vars = new HashSet<Variable>();
+		CollectVarsVisitor visitor = new CollectVarsVisitor(vars);
+		visitor.visit(f);
+
+		if (vars.isEmpty()) {
+			Formula res = pre.copy();
+
+			PureFormula pf = f.getPureFormula();
+			for (PureTerm pt : pf.getPureTerms()) {
+				ComparisonTerm ct = (ComparisonTerm) pt;
+				res.addComparisonTerm(ct.getComparator(), ct.getExp1(), ct.getExp2());
+			}
+
+			fs.add(res);
+			return fs;
+		} else {
+			ArrayList<Variable> arr = new ArrayList<Variable>(vars);
+
+			Collections.sort(arr, new Comparator<Variable>() {
+
+				@Override
+				public int compare(Variable var1, Variable var2) {
+					int count1 = 0, count2 = 0;
+					String name1 = var1.getName();
+					String name2 = var2.getName();
+
+					for (int i = 0; i < name1.length(); i++) {
+						char c = name1.charAt(i);
+						if (c == '.')
+							count1++;
+					}
+
+					for (int i = 0; i < name2.length(); i++) {
+						char c = name2.charAt(i);
+						if (c == '.')
+							count2++;
+					}
+
+					return count1 - count2;
+				}
+
+			});
+
+			Variable var = arr.get(0);
+			String name = var.getName();
+			String rootName = name.substring(0, name.indexOf('.'));
+			String fieldName = name.substring(name.indexOf('.') + 1, name.length());
+
+			if (Utilities.isNull(pre, rootName)) {
+				return fs;
+			} else {
+				HeapTerm ht = Utilities.findHeapTerm(pre, rootName);
+				if (ht == null) {
+					return fs;
+				} else if (ht instanceof PointToTerm) {
+					PointToTerm pt = (PointToTerm) ht;
+					DataNode dn = DataNodeMap.find(pt.getType());
+					Variable[] fields = dn.getFields();
+
+					int i = 0;
+					for (i = 0; i < fields.length; i++) {
+						if (fields[i].getName().equals(fieldName))
+							break;
+					}
+					
+					if (i >= fields.length)
+						return fs;
+
+					Variable symF = pt.getVarsNoRoot()[i];
+
+					Variable[] fromVars = new Variable[arr.size()];
+					Variable[] toVars = new Variable[arr.size()];
+
+					arr.toArray(fromVars);
+
+					for (i = 0; i < arr.size(); i++) {
+						Variable fromVar = fromVars[i];
+						String prefix = name;
+
+						if (fromVar.getName().startsWith(prefix)) {
+							String toVarName = fromVar.getName().replace(prefix, symF.getName());
+							toVars[i] = new Variable(toVarName, fromVar.getType());
+						} else {
+							toVars[i] = new Variable(fromVar.getName(), fromVar.getType());
+						}
+					}
+
+					Formula newF = f.substitute(fromVars, toVars, null);
+
+					fs.addAll(preprocess(pre, newF));
+
+					return fs;
+				} else {
+					InductiveTerm it = (InductiveTerm) ht;
+					for (int index = 0; index < it.unfold().length; index++) {
+						Formula newPre = pre.copy();
+						newPre.unfold(it, index);
+
+						if (Utilities.isNull(newPre, rootName)) {
+							continue;
+						} else {
+							PointToTerm pt = (PointToTerm) Utilities.findHeapTerm(newPre, rootName);
+							DataNode dn = DataNodeMap.find(pt.getType());
+							Variable[] fields = dn.getFields();
+
+							int i = 0;
+							for (i = 0; i < fields.length; i++) {
+								if (fields[i].getName().equals(fieldName))
+									break;
+							}
+
+							if (i >= fields.length)
+								continue;
+							
+							Variable symF = pt.getVarsNoRoot()[i];
+
+							Variable[] fromVars = new Variable[arr.size()];
+							Variable[] toVars = new Variable[arr.size()];
+
+							arr.toArray(fromVars);
+
+							for (i = 0; i < arr.size(); i++) {
+								Variable fromVar = fromVars[i];
+								String prefix = name;
+
+								if (fromVar.getName().startsWith(prefix)) {
+									String toVarName = fromVar.getName().replace(prefix, symF.getName());
+									toVars[i] = new Variable(toVarName, fromVar.getType());
+								} else {
+									toVars[i] = new Variable(fromVar.getName(), fromVar.getType());
+								}
+							}
+
+							Formula newF = f.substitute(fromVars, toVars, null);
+
+							fs.addAll(preprocess(newPre, newF));
+						}
+
+					}
+					return fs;
+				}
+			}
 		}
 	}
 	
