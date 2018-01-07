@@ -1,6 +1,7 @@
 package starlib.formula.expression;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,12 +23,15 @@ public class BinaryExpression extends Expression {
 	
 	@Override
 	public Set<Variable> getVars() {
+		Set<Variable> vars = new HashSet<Variable>();
+		
 		Set<Variable> vars1 = exp1.getVars();
 		Set<Variable> vars2 = exp2.getVars();
 		
-		vars1.addAll(vars2);
+		vars.addAll(vars1);
+		vars.addAll(vars2);
 		
-		return vars1;
+		return vars;
 	}
 	
 	@Override
