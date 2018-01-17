@@ -35,7 +35,7 @@ public class CollectVarsVisitor extends StarVisitor {
 	@Override 
 	public void visit(ComparisonTerm term) {
 		Set<Variable> tmp = new HashSet<Variable>();
-		
+				
 		tmp.addAll(term.getExp1().getVars());
 		tmp.addAll(term.getExp2().getVars());
 		

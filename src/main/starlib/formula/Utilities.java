@@ -130,6 +130,44 @@ public class Utilities {
 
 		return null;
 	}
+	
+	public static HeapTerm findHeapTermNoRoot(Formula pc, String varName) {
+		HeapFormula hf = pc.getHeapFormula();
+		Set<String> alias = pc.getAlias(varName);
+
+		for (HeapTerm term : hf.getHeapTerms()) {			
+			if (term instanceof PointToTerm) {
+				PointToTerm ptTerm = (PointToTerm) term;
+				Variable root = ptTerm.getRoot();
+				
+				String rootName = root.getName();
+
+				if (rootName.equals(varName)) {
+					return term;
+				} else {
+					if(alias != null && alias.contains(rootName)) {
+						return term;
+					}
+				}
+			} else if (term instanceof InductiveTerm) {
+				InductiveTerm itTerm = (InductiveTerm) term;
+				
+				for (Variable root : itTerm.getVars()) {
+					String rootName = root.getName();
+
+					if (rootName.equals(varName)) {
+						return term;
+					} else {
+						if(alias != null && alias.contains(rootName)) {
+							return term;
+						}
+					}
+				}
+			}
+		}
+
+		return null;
+	}
 	//*/
 	
 	

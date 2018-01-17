@@ -168,6 +168,18 @@ public class Solver {
 	}
 	
 	public static List<Formula> preprocess(Formula pre, Formula f) {
+		Formula res = pre.copy();
+
+		PureFormula pf = f.getPureFormula();
+		for (PureTerm pt : pf.getPureTerms()) {
+			ComparisonTerm ct = (ComparisonTerm) pt;
+			res.addComparisonTerm(ct.getComparator(), ct.getExp1(), ct.getExp2());
+		}
+		
+		return preprocess(res);
+	}
+	
+	public static List<Formula> preprocess(Formula f) {
 		List<Formula> fs = new ArrayList<Formula>();
 
 		Set<Variable> vars = new HashSet<Variable>();
@@ -175,15 +187,7 @@ public class Solver {
 		visitor.visit(f);
 
 		if (vars.isEmpty()) {
-			Formula res = pre.copy();
-
-			PureFormula pf = f.getPureFormula();
-			for (PureTerm pt : pf.getPureTerms()) {
-				ComparisonTerm ct = (ComparisonTerm) pt;
-				res.addComparisonTerm(ct.getComparator(), ct.getExp1(), ct.getExp2());
-			}
-
-			fs.add(res);
+			fs.add(f);
 			return fs;
 		} else {
 			ArrayList<Variable> arr = new ArrayList<Variable>(vars);
@@ -218,10 +222,10 @@ public class Solver {
 			String rootName = name.substring(0, name.indexOf('.'));
 			String fieldName = name.substring(name.indexOf('.') + 1, name.length());
 
-			if (Utilities.isNull(pre, rootName)) {
+			if (Utilities.isNull(f, rootName)) {
 				return fs;
 			} else {
-				HeapTerm ht = Utilities.findHeapTerm(pre, rootName);
+				HeapTerm ht = Utilities.findHeapTermNoRoot(f, rootName);
 				if (ht == null) {
 					return fs;
 				} else if (ht instanceof PointToTerm) {
@@ -231,7 +235,7 @@ public class Solver {
 
 					int i = 0;
 					for (i = 0; i < fields.length; i++) {
-						if (fields[i].getName().equals(fieldName))
+						if (fieldName.contains(fields[i].getName()))
 							break;
 					}
 					
@@ -259,25 +263,32 @@ public class Solver {
 
 					Formula newF = f.substitute(fromVars, toVars, null);
 
-					fs.addAll(preprocess(pre, newF));
+					fs.addAll(preprocess(newF));
 
 					return fs;
 				} else {
 					InductiveTerm it = (InductiveTerm) ht;
+					
 					for (int index = 0; index < it.unfold().length; index++) {
-						Formula newPre = pre.copy();
-						newPre.unfold(it, index);
+						Formula copyF = f.copy();
+						copyF.unfold(it, index);
 
-						if (Utilities.isNull(newPre, rootName)) {
+						if (Utilities.isNull(copyF, rootName)) {
 							continue;
 						} else {
-							PointToTerm pt = (PointToTerm) Utilities.findHeapTerm(newPre, rootName);
+							HeapTerm tmp = Utilities.findHeapTerm(copyF, rootName);
+							
+							if (!(tmp instanceof PointToTerm)) {
+								continue;
+							}
+							
+							PointToTerm pt = (PointToTerm) tmp;
 							DataNode dn = DataNodeMap.find(pt.getType());
 							Variable[] fields = dn.getFields();
 
 							int i = 0;
 							for (i = 0; i < fields.length; i++) {
-								if (fields[i].getName().equals(fieldName))
+								if (fieldName.contains(fields[i].getName()))
 									break;
 							}
 
@@ -303,9 +314,9 @@ public class Solver {
 								}
 							}
 
-							Formula newF = f.substitute(fromVars, toVars, null);
+							Formula newF = copyF.substitute(fromVars, toVars, null);
 
-							fs.addAll(preprocess(newPre, newF));
+							fs.addAll(preprocess(newF));
 						}
 
 					}
@@ -317,7 +328,13 @@ public class Solver {
 	
 	public static boolean checkSat(List<Formula> fs) {
 		for (Formula f : fs) {
-			if (checkSat(f)) return true;
+//			System.out.println(f);
+			if (checkSat(f)) {
+//				System.out.println("true");
+				return true;
+			} else {
+//				System.out.println("false");
+			}
 		}
 		
 		return false;
