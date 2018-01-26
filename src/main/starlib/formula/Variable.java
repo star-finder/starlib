@@ -128,6 +128,11 @@ public class Variable extends Expression{
 
 		return newVar;
 	}
+	
+	@Override
+	public Expression copy() {
+		return new Variable(name, type);
+	}
 
 	@Override
 	public void updateType(HashMap<String, String> knownTypeVars) {

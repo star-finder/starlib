@@ -60,6 +60,11 @@ public class VariableExpression extends Expression {
 	}
 	
 	@Override
+	public Expression copy() {
+		return new VariableExpression((Variable) var.copy());
+	}
+	
+	@Override
 	public void updateType(HashMap<String, String> knownTypeVars) {
 		//TODO: Refactor, since this is cloned from EqNullTerm
 		String type = knownTypeVars.get(var.getName());

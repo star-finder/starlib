@@ -16,6 +16,8 @@ public abstract class Expression {
 	public abstract Expression substitute(Variable[] fromVars, Variable[] toVars,
 			Map<String,String> existVarSubMap);
 	
+	public abstract Expression copy();
+	
 	public abstract void updateType(HashMap<String, String> knownTypeVars);
 
 }

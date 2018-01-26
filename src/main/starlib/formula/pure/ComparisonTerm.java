@@ -46,6 +46,14 @@ public class ComparisonTerm extends PureTerm {
 	}
 	
 	@Override
+	public PureTerm copy() {
+		Expression copyExp1 = exp1.copy();
+		Expression copyExp2 = exp2.copy();
+		
+		return new ComparisonTerm(comp, copyExp1, copyExp2);
+	}
+	
+	@Override
 	public void updateType(HashMap<String, String> knownTypeVars) {
 		if(exp1 instanceof Variable && exp2 instanceof Variable) {
 			// TODO: Handle polymorphism. At the moment, we assume that both

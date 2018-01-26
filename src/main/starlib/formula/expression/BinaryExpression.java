@@ -45,6 +45,15 @@ public class BinaryExpression extends Expression {
 	}
 	
 	@Override
+	public Expression copy() {
+		Expression copyExp1 = exp1.copy();
+		Expression copyExp2 = exp2.copy();
+		BinaryExpression copyBinaryExp = new BinaryExpression(op, copyExp1, copyExp2);
+		
+		return copyBinaryExp;
+	}
+	
+	@Override
 	public void updateType(HashMap<String, String> knownTypeVars) {
 		exp1.updateType(knownTypeVars);
 		exp2.updateType(knownTypeVars);

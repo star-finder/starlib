@@ -32,6 +32,10 @@ public class InductiveTerm extends HeapTerm {
 		return unfoldedFormulas;
 	}
 	
+	public void setUnfoldedFormulas(Formula[] ufs) {
+		unfoldedFormulas = ufs;
+	}
+	
 	// very imporant function
 	// if we have x::sll()
 	// and predicate root::sll() === root = null \/ root->Node(next) * next::sll()
@@ -95,10 +99,30 @@ public class InductiveTerm extends HeapTerm {
 		return newInductiveTerm;
 	}
 	
-//	@Override
-//	public HeapTerm copy() {
-//		return new InductiveTerm(predName, vars);
-//	}
+	@Override
+	public HeapTerm copy() {
+		Variable[] copyVars = new Variable[vars.length];
+		for (int i = 0; i < vars.length; i++) {
+			copyVars[i] = new Variable(vars[i].getName(), vars[i].getType());
+		}
+		
+		String copyPredName = predName;
+		
+		Formula[] copyUnfoldedFormulas = null;
+		
+		if (unfoldedFormulas != null) {
+			copyUnfoldedFormulas = new Formula[unfoldedFormulas.length];
+		
+			for (int i = 0; i < unfoldedFormulas.length; i++) {
+				copyUnfoldedFormulas[i] = unfoldedFormulas[i].copy();
+			}
+		}
+		
+		InductiveTerm copyTerm = new InductiveTerm(copyPredName, copyVars);
+		copyTerm.setUnfoldedFormulas(copyUnfoldedFormulas);
+		
+		return copyTerm;
+	}
 	
 	@Override
 	public String toString() {

@@ -62,10 +62,17 @@ public class PointToTerm extends HeapTerm {
 		return newPointToTerm;
 	}
 	
-//	@Override
-//	public HeapTerm copy() {
-//		return new PointToTerm(type, vars);
-//	}
+	@Override
+	public HeapTerm copy() {
+		Variable[] copyVars = new Variable[vars.length];
+		for (int i = 0; i < vars.length; i++) {
+			copyVars[i] = new Variable(vars[i].getName(), vars[i].getType());
+		}
+		
+		String copyType = type;
+		
+		return new PointToTerm(copyType, copyVars);
+	}
 	
 	@Override
 	public void updateType(HashMap<String, String> knownTypeVars) {

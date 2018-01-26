@@ -94,24 +94,24 @@ public class Formula {
 		return getAliasMap().get(name);
 	}
 	
-	public Formula rename(Variable var, Variable[] fields) {
-		HeapTerm ht = Utilities.findHeapTerm(this, var.getName());
-		
-		if (ht instanceof PointToTerm) {
-			Variable[] fromVars = ((PointToTerm) ht).getVarsNoRoot();
-			Variable[] toVars = new Variable[fromVars.length];
-			
-			for (int i = 0; i < fields.length; i++) {
-				toVars[i] = new Variable(var.getName() + "_" + fields[i].getName(), "");
-			}
-			
-			Formula newFormula = this.substitute(fromVars, toVars, null);
-			heapFormula = newFormula.getHeapFormula();
-			pureFormula = newFormula.getPureFormula();
-		}
-		
-		return this;
-	}
+//	public Formula rename(Variable var, Variable[] fields) {
+//		HeapTerm ht = Utilities.findHeapTerm(this, var.getName());
+//		
+//		if (ht instanceof PointToTerm) {
+//			Variable[] fromVars = ((PointToTerm) ht).getVarsNoRoot();
+//			Variable[] toVars = new Variable[fromVars.length];
+//			
+//			for (int i = 0; i < fields.length; i++) {
+//				toVars[i] = new Variable(var.getName() + "_" + fields[i].getName(), "");
+//			}
+//			
+//			Formula newFormula = this.substitute(fromVars, toVars, null);
+//			heapFormula = newFormula.getHeapFormula();
+//			pureFormula = newFormula.getPureFormula();
+//		}
+//		
+//		return this;
+//	}
 	
 	// substitute parameters with new vars
 	public Formula substitute(Variable[] fromVars, Variable[] toVars,

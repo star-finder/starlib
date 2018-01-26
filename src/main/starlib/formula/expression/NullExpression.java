@@ -26,6 +26,11 @@ public class NullExpression extends Expression{
 	public Expression substitute(Variable[] fromVars, Variable[] toVars, Map<String, String> existVarSubMap) {
 		return INSTANCE;
 	}
+	
+	@Override
+	public Expression copy() {
+		return INSTANCE;
+	}
 
 	@Override
 	public void updateType(HashMap<String, String> knownTypeVars) {

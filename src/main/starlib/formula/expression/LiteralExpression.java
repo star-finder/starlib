@@ -45,6 +45,11 @@ public class LiteralExpression extends Expression {
 	}
 	
 	@Override
+	public Expression copy() {
+		return this;
+	}
+	
+	@Override
 	public String toString() {
 		return value;
 	}

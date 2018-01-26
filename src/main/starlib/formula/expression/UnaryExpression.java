@@ -32,6 +32,14 @@ public class UnaryExpression extends Expression {
 	}
 	
 	@Override
+	public Expression copy() {
+		Expression copyExp = exp.copy();
+		UnaryExpression copyUnaryExp = new UnaryExpression(op, copyExp);
+		
+		return copyUnaryExp;
+	}
+	
+	@Override
 	public void updateType(HashMap<String, String> knownTypeVars) {
 		exp.updateType(knownTypeVars);
 	}
