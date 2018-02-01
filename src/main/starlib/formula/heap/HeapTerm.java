@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import starlib.StarVisitor;
+import starlib.formula.Formula;
 import starlib.formula.Variable;
 
 public abstract class HeapTerm {
@@ -33,6 +34,16 @@ public abstract class HeapTerm {
 	
 	public void updateType(HashMap<String,String> knownTypeVars) {
 		return;
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (this == other)
+			return true;
+		else if (!(other instanceof HeapTerm))
+			return false;
+		else
+			return this.toString().equals(other.toString());
 	}
 	
 	public abstract String toS2SATString();

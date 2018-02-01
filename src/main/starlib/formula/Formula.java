@@ -174,6 +174,11 @@ public class Formula {
 		depth++;
 	}
 	
+	public void addPointToTerm(Variable[] vars, String type) {
+		HeapTerm ht = new PointToTerm(type, vars);
+		heapFormula.addTerm(ht);
+	}
+	
 	public void addPointToTerm(Variable var, String type) {
 		DataNode dn = DataNodeMap.find(type);
 		Variable[] fields = dn.getFields();

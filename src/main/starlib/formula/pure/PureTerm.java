@@ -5,6 +5,7 @@ import java.util.Map;
 
 import starlib.StarVisitor;
 import starlib.formula.Variable;
+import starlib.formula.heap.HeapTerm;
 
 public abstract class PureTerm {
 	
@@ -20,5 +21,15 @@ public abstract class PureTerm {
 	}
 
 	public abstract void accept(StarVisitor visitor);
+	
+	@Override
+	public boolean equals(Object other) {
+		if (this == other)
+			return true;
+		else if (!(other instanceof PureTerm))
+			return false;
+		else
+			return this.toString().equals(other.toString());
+	}
 	
 }
