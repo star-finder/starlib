@@ -22,6 +22,10 @@ public abstract class PureTerm {
 
 	public abstract void accept(StarVisitor visitor);
 	
+	public String toS2SATString() {
+		return this.toString();
+	}
+	
 	@Override
 	public boolean equals(Object other) {
 		if (this == other)

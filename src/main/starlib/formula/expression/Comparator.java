@@ -44,7 +44,9 @@ public enum Comparator {
    LT(" < ")  { public Comparator not() { return GE; }},
    LE(" <= ") { public Comparator not() { return GT; }},
    GT(" > ")  { public Comparator not() { return LE; }},
-   GE(" >= ") { public Comparator not() { return LT; }};
+   GE(" >= ") { public Comparator not() { return LT; }},
+   AS(" := ") { public Comparator not() { return AS; }},
+   AF(" := ") { public Comparator not() { return AF; }};
 
    private final String str;
 
@@ -56,6 +58,11 @@ public enum Comparator {
    
    @Override
    public String toString() {
+	 return str;
+   }
+   
+   public String toS2SATString() {
+	 if (this == AS || this == AF) return " = ";
 	 return str;
    }
 

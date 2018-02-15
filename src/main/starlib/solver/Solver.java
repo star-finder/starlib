@@ -174,12 +174,12 @@ public class Solver {
 	
 	public static boolean checkSat(List<Formula> fs) {
 		for (Formula f : fs) {
-//			System.out.println(f);
+			System.out.println(f);
 			if (checkSat(f)) {
-//				System.out.println("true");
+				System.out.println("true");
 				return true;
 			} else {
-//				System.out.println("false");
+				System.out.println("false");
 			}
 		}
 		

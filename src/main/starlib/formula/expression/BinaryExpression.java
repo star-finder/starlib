@@ -1,7 +1,9 @@
 package starlib.formula.expression;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,6 +29,19 @@ public class BinaryExpression extends Expression {
 		
 		Set<Variable> vars1 = exp1.getVars();
 		Set<Variable> vars2 = exp2.getVars();
+		
+		vars.addAll(vars1);
+		vars.addAll(vars2);
+		
+		return vars;
+	}
+	
+	@Override
+	public List<Variable> getVarsList() {
+		List<Variable> vars = new ArrayList<Variable>();
+		
+		List<Variable> vars1 = exp1.getVarsList();
+		List<Variable> vars2 = exp2.getVarsList();
 		
 		vars.addAll(vars1);
 		vars.addAll(vars2);

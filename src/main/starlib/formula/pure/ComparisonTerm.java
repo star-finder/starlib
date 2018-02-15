@@ -88,6 +88,17 @@ public class ComparisonTerm extends PureTerm {
 		}
 		return exp1.toString() + comp.toString() + exp2.toString();
 	}
+	
+	@Override
+	public String toS2SATString() {
+		if(exp1 == null) {
+			System.out.println("exp1 is null");
+		}
+		if(exp2 == null) {
+			System.out.println("exp2 is null");
+		}
+		return exp1.toString() + comp.toS2SATString() + exp2.toString();
+	}
 
 	@Override
 	public void accept(StarVisitor visitor) {

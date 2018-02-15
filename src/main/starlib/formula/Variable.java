@@ -106,6 +106,12 @@ public class Variable extends Expression{
 	public Set<Variable> getVars() {
 		return lazyGetVars;
 	}
+	
+	@Override
+	public List<Variable> getVarsList() {
+		List<Variable> vars = new ArrayList<Variable>(lazyGetVars);
+		return vars;
+	}
 
 	@Override
 	public Expression substitute(Variable[] fromVars, Variable[] toVars, Map<String, String> existVarSubMap) {

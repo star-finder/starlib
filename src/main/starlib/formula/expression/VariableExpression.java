@@ -1,7 +1,9 @@
 package starlib.formula.expression;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,6 +29,13 @@ public class VariableExpression extends Expression {
 	
 	public Set<Variable> getVars() {
 		Set<Variable> vars = new HashSet<Variable>();
+		vars.add(var);
+		
+		return vars;
+	}
+	
+	public List<Variable> getVarsList() {
+		List<Variable> vars = new ArrayList<Variable>();
 		vars.add(var);
 		
 		return vars;

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import starlib.StarVisitor;
@@ -12,7 +13,6 @@ import starlib.formula.expression.Comparator;
 import starlib.formula.expression.Expression;
 import starlib.formula.expression.NullExpression;
 import starlib.formula.pure.ComparisonTerm;
-import starlib.formula.pure.EqTerm;
 import starlib.formula.pure.PureTerm;
 
 // a pure formula includes multiple pure terms
@@ -42,8 +42,16 @@ public class PureFormula {
 		return pureTerms;
 	}
 	
+	public void setPureTerms(PureTerm[] pureTerms) {
+		this.pureTerms = pureTerms;
+	}
+	
 	public Map<String,Set<String>> getAliasMap(){
 		return aliasMap;
+	}
+	
+	public void setAliasMap(Map<String,Set<String>> aliasMap) {
+		this.aliasMap = aliasMap;
 	}
 	
 	/*
@@ -122,6 +130,29 @@ public class PureFormula {
 		}
 		
 		PureFormula newPureFormula = new PureFormula(newPureTerms);
+		return newPureFormula;
+	}
+	
+	public PureFormula copyWithAliasMap() {
+		int length = pureTerms.length;
+		PureTerm[] newPureTerms = new PureTerm[length];
+		
+		for (int i = 0; i < length; i++) {
+			newPureTerms[i] = pureTerms[i].copy();
+		}
+		
+		PureFormula newPureFormula = new PureFormula();
+		newPureFormula.setPureTerms(newPureTerms);
+		
+		Map<String, Set<String>> newAliasMap = new HashMap<String, Set<String>>();
+		for (Entry<String, Set<String>> entry : aliasMap.entrySet()) {
+			String var = entry.getKey();
+			Set<String> aliasVars = entry.getValue();
+			
+			newAliasMap.put(var, new HashSet<String>(aliasVars));
+		}
+		newPureFormula.setAliasMap(newAliasMap);
+		
 		return newPureFormula;
 	}
 	
@@ -205,6 +236,19 @@ public class PureFormula {
 	}
 	
 	public String toS2SATString() {
-		return this.toString();
+		if (pureTerms.length == 0)
+			return "true";
+		else {
+			int length = pureTerms.length;
+			StringBuilder ret = new StringBuilder();
+			
+			for (int i = 0; i < length - 1; i++) {
+				ret.append(pureTerms[i].toS2SATString() + " & ");
+			}
+			ret.append(pureTerms[length - 1].toS2SATString());
+			
+			return ret.toString();
+		}
 	}
+	
 }

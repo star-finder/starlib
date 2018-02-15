@@ -51,20 +51,20 @@ public class CollectVarsVisitor extends StarVisitor {
 			Iterator<Variable> it = tmp.iterator();
 			while (it.hasNext()) {
 				Variable var = it.next();
-				if (var.getName().contains(".")) {
+				if (var.getName().contains(".") || var.getName().startsWith("this_")) {
 					vars.add(var);
 				}
 			}
 		} else if (varsList != null) {
 			List<Variable> tmp = new ArrayList<Variable>();
 			
-			tmp.addAll(term.getExp2().getVars());
-			tmp.addAll(term.getExp1().getVars());
-			
+			tmp.addAll(term.getExp2().getVarsList());
+			tmp.addAll(term.getExp1().getVarsList());
+					
 			Iterator<Variable> it = tmp.iterator();
 			while (it.hasNext()) {
 				Variable var = it.next();
-				if (var.getName().contains(".") && !varsList.contains(var)) {
+				if (var.getName().contains(".") || var.getName().startsWith("this_")) {
 					varsList.add(var);
 				}
 			}

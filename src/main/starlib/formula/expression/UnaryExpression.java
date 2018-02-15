@@ -1,6 +1,7 @@
 package starlib.formula.expression;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,6 +21,11 @@ public class UnaryExpression extends Expression {
 	@Override
 	public Set<Variable> getVars() {
 		return exp.getVars();
+	}
+	
+	@Override
+	public List<Variable> getVarsList() {
+		return exp.getVarsList();
 	}
 	
 	@Override
