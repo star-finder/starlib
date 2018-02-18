@@ -248,6 +248,23 @@ public class Formula {
 		heapFormula.addTerm(ht);
 	}
 	
+	public void addPointToTermConcrete(Variable var, String type) {
+		DataNode dn = DataNodeMap.find(type);
+		if (dn == null) return;
+		
+		Variable[] fields = dn.getFields();
+		
+		Variable[] vars = new Variable[fields.length + 1];
+		
+		for (int i = 0; i < vars.length; i++) {
+			if (i == 0) vars[i] = new Variable(var.getName(), "");
+			else vars[i] = Utilities.freshVar(fields[i - 1]);
+		}
+		
+		HeapTerm ht = new PointToTerm(type, vars);
+		heapFormula.addTerm(ht);
+	}
+	
 	public void addPointToTermMockUp(Variable var, String type) {
 		DataNode dn = new DataNode(type, new Variable[0]);
 		DataNodeMap.put(dn);
