@@ -57,7 +57,7 @@ public class PureFormula {
 	/*
 	 * This method replaced the old updateAlias for deprecated EqTerm
 	 */
-	private void updateAlias(ComparisonTerm term) {
+	public void updateAlias(ComparisonTerm term) {
 		Expression exp1 = term.getExp1();
 		Expression exp2 = term.getExp2();
 
@@ -133,28 +133,28 @@ public class PureFormula {
 		return newPureFormula;
 	}
 	
-	public PureFormula copyWithAliasMap() {
-		int length = pureTerms.length;
-		PureTerm[] newPureTerms = new PureTerm[length];
-		
-		for (int i = 0; i < length; i++) {
-			newPureTerms[i] = pureTerms[i].copy();
-		}
-		
-		PureFormula newPureFormula = new PureFormula();
-		newPureFormula.setPureTerms(newPureTerms);
-		
-		Map<String, Set<String>> newAliasMap = new HashMap<String, Set<String>>();
-		for (Entry<String, Set<String>> entry : aliasMap.entrySet()) {
-			String var = entry.getKey();
-			Set<String> aliasVars = entry.getValue();
-			
-			newAliasMap.put(var, new HashSet<String>(aliasVars));
-		}
-		newPureFormula.setAliasMap(newAliasMap);
-		
-		return newPureFormula;
-	}
+//	public PureFormula copyWithAliasMap() {
+//		int length = pureTerms.length;
+//		PureTerm[] newPureTerms = new PureTerm[length];
+//		
+//		for (int i = 0; i < length; i++) {
+//			newPureTerms[i] = pureTerms[i].copy();
+//		}
+//		
+//		PureFormula newPureFormula = new PureFormula();
+//		newPureFormula.setPureTerms(newPureTerms);
+//		
+//		Map<String, Set<String>> newAliasMap = new HashMap<String, Set<String>>();
+//		for (Entry<String, Set<String>> entry : aliasMap.entrySet()) {
+//			String var = entry.getKey();
+//			Set<String> aliasVars = entry.getValue();
+//			
+//			newAliasMap.put(var, new HashSet<String>(aliasVars));
+//		}
+//		newPureFormula.setAliasMap(newAliasMap);
+//		
+//		return newPureFormula;
+//	}
 	
 	public void addTerm(PureTerm term) {
 		int length = pureTerms.length + 1;

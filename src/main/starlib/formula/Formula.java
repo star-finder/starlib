@@ -143,23 +143,23 @@ public class Formula {
 		return newFormula;
 	}
 	
-	public Formula copyWithAliasMap() {
-		HeapFormula newHeapFormula = heapFormula.copy();
-		PureFormula newPureFormula = pureFormula.copyWithAliasMap();
-		
-		Map<String, List<Variable>> newTypeMap = new HashMap<String, List<Variable>>();
-		for (Entry<String, List<Variable>> entry : typeMap.entrySet()) {
-			String type = entry.getKey();
-			List<Variable> vars = entry.getValue();
-			
-			newTypeMap.put(type, new ArrayList<Variable>(vars));
-		}
-		
-		Map<String, Integer> newAddressMap = new HashMap<String, Integer>(addressMap);
-		
-		Formula newFormula = new Formula(newHeapFormula, newPureFormula, newTypeMap, newAddressMap, depth);
-		return newFormula;
-	}
+//	public Formula copyWithAliasMap() {
+//		HeapFormula newHeapFormula = heapFormula.copy();
+//		PureFormula newPureFormula = pureFormula.copyWithAliasMap();
+//		
+//		Map<String, List<Variable>> newTypeMap = new HashMap<String, List<Variable>>();
+//		for (Entry<String, List<Variable>> entry : typeMap.entrySet()) {
+//			String type = entry.getKey();
+//			List<Variable> vars = entry.getValue();
+//			
+//			newTypeMap.put(type, new ArrayList<Variable>(vars));
+//		}
+//		
+//		Map<String, Integer> newAddressMap = new HashMap<String, Integer>(addressMap);
+//		
+//		Formula newFormula = new Formula(newHeapFormula, newPureFormula, newTypeMap, newAddressMap, depth);
+//		return newFormula;
+//	}
 	
 	public void unfold(InductiveTerm it, int index) {
 		Formula[] unfoldedFormulas = it.getUnfoldedFormulas();
@@ -192,41 +192,41 @@ public class Formula {
 		depth++;
 	}
 	
-	public void unfoldWithAssign(InductiveTerm it, int index) {
-		Formula[] unfoldedFormulas = it.getUnfoldedFormulas();
-		Formula f = unfoldedFormulas[index];
-		
-		int heapSize = f.heapFormula.getHeapTerms().length + heapFormula.getHeapTerms().length - 1;
-		int pureSize = f.pureFormula.getPureTerms().length + pureFormula.getPureTerms().length;
-		
-		HeapTerm[] newHeapTerms = new HeapTerm[heapSize];
-		PureTerm[] newPureTerms = new PureTerm[pureSize];
-		
-		int curr = 0;
-		for (int i = 0; i < heapFormula.getHeapTerms().length; i++) {
-			if (!heapFormula.getHeapTerms()[i].equals(it)) {
-				newHeapTerms[curr] = heapFormula.getHeapTerms()[i];
-				curr++;
-			}
-		}
-		
-		System.arraycopy(f.heapFormula.getHeapTerms(), 0,
-				newHeapTerms, heapFormula.getHeapTerms().length - 1, f.heapFormula.getHeapTerms().length);
-		
-		System.arraycopy(f.pureFormula.getPureTerms(), 0,
-				newPureTerms, 0, f.pureFormula.getPureTerms().length);
-		System.arraycopy(pureFormula.getPureTerms(), 0,
-				newPureTerms, f.pureFormula.getPureTerms().length, pureFormula.getPureTerms().length);
-		
-		Map<String,Set<String>> oldAliasMap = pureFormula.getAliasMap();
-		
-		heapFormula = new HeapFormula(newHeapTerms);
-		pureFormula = new PureFormula(newPureTerms);
-		
-		pureFormula.getAliasMap().putAll(oldAliasMap);
-		
-		depth++;
-	}
+//	public void unfoldWithAssign(InductiveTerm it, int index) {
+//		Formula[] unfoldedFormulas = it.getUnfoldedFormulas();
+//		Formula f = unfoldedFormulas[index];
+//		
+//		int heapSize = f.heapFormula.getHeapTerms().length + heapFormula.getHeapTerms().length - 1;
+//		int pureSize = f.pureFormula.getPureTerms().length + pureFormula.getPureTerms().length;
+//		
+//		HeapTerm[] newHeapTerms = new HeapTerm[heapSize];
+//		PureTerm[] newPureTerms = new PureTerm[pureSize];
+//		
+//		int curr = 0;
+//		for (int i = 0; i < heapFormula.getHeapTerms().length; i++) {
+//			if (!heapFormula.getHeapTerms()[i].equals(it)) {
+//				newHeapTerms[curr] = heapFormula.getHeapTerms()[i];
+//				curr++;
+//			}
+//		}
+//		
+//		System.arraycopy(f.heapFormula.getHeapTerms(), 0,
+//				newHeapTerms, heapFormula.getHeapTerms().length - 1, f.heapFormula.getHeapTerms().length);
+//		
+//		System.arraycopy(f.pureFormula.getPureTerms(), 0,
+//				newPureTerms, 0, f.pureFormula.getPureTerms().length);
+//		System.arraycopy(pureFormula.getPureTerms(), 0,
+//				newPureTerms, f.pureFormula.getPureTerms().length, pureFormula.getPureTerms().length);
+//		
+//		Map<String,Set<String>> oldAliasMap = pureFormula.getAliasMap();
+//		
+//		heapFormula = new HeapFormula(newHeapTerms);
+//		pureFormula = new PureFormula(newPureTerms);
+//		
+////		pureFormula.getAliasMap().putAll(oldAliasMap);
+//		
+//		depth++;
+//	}
 	
 	public void addPointToTerm(Variable[] vars, String type) {
 		HeapTerm ht = new PointToTerm(type, vars);

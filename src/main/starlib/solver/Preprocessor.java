@@ -24,37 +24,65 @@ import starlib.formula.pure.PureTerm;
 
 public class Preprocessor {
 	
-	public static List<Formula> preprocess(Formula pre, Formula f) {
-		Formula res = pre.copy();
+	public static List<Formula> preprocess(Formula pre, Formula pc) {
+		Formula preCopy = pre.copy();
+		Formula pcCopy = pc.copy();
 		
-		int startIndex = res.getPureFormula().getPureTerms().length;
-
-		HeapFormula hf = f.getHeapFormula();
+		Formula f = preCopy;
+		HeapFormula hf = pcCopy.getHeapFormula();
 		for (HeapTerm ht : hf.getHeapTerms()) {
 			PointToTerm pt = (PointToTerm) ht;
-			res.addPointToTerm(pt.getVars(), pt.getType());
+			f.addPointToTerm(pt.getVars(), pt.getType());
 		}
 		
-		PureFormula pf = f.getPureFormula();
+		PureFormula pf = pcCopy.getPureFormula();
 		for (PureTerm pt : pf.getPureTerms()) {
 			ComparisonTerm ct = (ComparisonTerm) pt;
-			res.addComparisonTerm(ct.getComparator(), ct.getExp1(), ct.getExp2());
+			f.addComparisonTerm(ct.getComparator(), ct.getExp1(), ct.getExp2());
 		}
 		
-		List<Formula> results = preprocess(res, new HashMap<String,String>(), startIndex);
+		f.getPureFormula().setAliasMap(new HashMap<String,Set<String>>());
+		List<Formula> result = preprocess(pre, pc, f);
 		
-		System.out.println(results);
+//		Formula res = pre.copy();
+//		Formula fcopy = pc.copy();
+//		
+//		HeapFormula hf = fcopy.getHeapFormula();
+//		for (HeapTerm ht : hf.getHeapTerms()) {
+//			PointToTerm pt = (PointToTerm) ht;
+//			res.addPointToTerm(pt.getVars(), pt.getType());
+//		}
+//		
+//		PureFormula pf = fcopy.getPureFormula();
+//		for (PureTerm pt : pf.getPureTerms()) {
+//			ComparisonTerm ct = (ComparisonTerm) pt;
+//			res.addComparisonTerm(ct.getComparator(), ct.getExp1(), ct.getExp2());
+//		}
 		
-		if (results.isEmpty()) {
-			try {
-				throw new Exception("Empty");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		String s1 = "this_deletedNode := this_nullNode & this_root != this_nullNode & this_lastNode := this_root & x >= this_root.element & this_deletedNode := this_root & this_root.right != this_nullNode & this_lastNode := this_root.right & x < this_root.right.element & this_root.right.left = this_nullNode & this_root.right.left := this_root.right.left & this_root.right = this_lastNode & this_deletedNode != this_nullNode & x = this_deletedNode.element & this_deletedNode.element := this_root.right.element & this_root.right := this_root.right.right & this_root != this_lastNode & this_root.left.level >= (this_root.level - 1) & this_root.right.level < (this_root.level - 1)";
+//		
+//		String s = "this_deletedNode := this_nullNode & this_root != this_nullNode & this_lastNode := this_root & x < this_root.element & this_root.left != this_nullNode & this_lastNode := this_root.left & x >= this_root.left.element & this_deletedNode := this_root.left & this_root.left.right = this_nullNode & this_root.left.right := this_root.left.right & this_root.left = this_lastNode & this_deletedNode != this_nullNode & x = this_deletedNode.element & this_deletedNode.element := this_root.left.element & this_root.left := this_root.left.right & this_root != this_lastNode & this_root.left.level < (this_root.level - 1) & this_root.level := (this_root.level - 1) & this_root.right.level > this_root.level";
+//		
+//		if (f.toString().equals(s1)) {
+//			int i = 0;
+//			i++;
+//		}
 		
-		return results;
+//		res.getPureFormula().setAliasMap(new HashMap<String,Set<String>>());
+//		Utilities.reset();
+//		List<Formula> results = preprocess(res);
+		
+//		if (result.isEmpty()) {
+//			try {
+//				System.out.println(pc);
+//				throw new Exception("Empty");
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+		
+		return result;
 	}
 	
 	private static String getName(PointToTerm pt, String root, String field) {
@@ -174,13 +202,13 @@ public class Preprocessor {
 		}
 	}
 	
-	public static List<Formula> preprocess(Formula f, Map<String,String> nameMap, int startIndex) {
-		List<Formula> fs = new ArrayList<Formula>();
+	public static List<Formula> preprocess(Formula pre, Formula pc, Formula f) {
+		List<Formula> fs = new ArrayList<Formula>();		
+		Map<String,String> nameMap = new HashMap<String,String>();
 		
 		PureFormula pf = f.getPureFormula();
 		
-		for (int termIndex = startIndex; termIndex < pf.getPureTerms().length; termIndex++) {
-			PureTerm pt = pf.getPureTerms()[termIndex];
+		for (PureTerm pt : pf.getPureTerms()) {
 			ComparisonTerm ct = (ComparisonTerm) pt;
 			Comparator cp = ct.getComparator();
 			
@@ -233,15 +261,32 @@ public class Preprocessor {
 						var.setName(newName);
 					} else if (ht instanceof InductiveTerm) {
 						InductiveTerm it = (InductiveTerm) ht;
-						Formula[] unfoldFs = it.unfold();
+						Formula preCopy = pre.copy();
+						Formula pcCopy = pc.copy();
 						
-						for (int j = 0; j < unfoldFs.length; j++) {
-							int offset = unfoldFs[j].getPureFormula().getPureTerms().length;
-							Formula copyF = f.copyWithAliasMap();
-							copyF.unfoldWithAssign(it, j);
-							
-							fs.addAll(preprocess(copyF, new HashMap<String,String>(nameMap), termIndex + offset));
+						for (HeapTerm preht : preCopy.getHeapFormula().getHeapTerms()) {
+							if (preht.equals(it)) {
+								InductiveTerm preit = (InductiveTerm) preht;
+								Formula[] unfoldFs = preit.unfold();
+								
+								for (int j = 0; j < unfoldFs.length; j++) {
+									Formula preCopy2 = preCopy.copy();
+									preCopy2.unfold(preit, j);
+									
+									fs.addAll(preprocess(preCopy2, pcCopy));
+								}
+							}
 						}
+						
+//						Formula[] unfoldFs = it.unfold();
+//						
+//						for (int j = 0; j < unfoldFs.length; j++) {
+//							Formula copyF = f.copy();
+//							copyF.unfold(it, j);
+//							
+//							copyF.getPureFormula().setAliasMap(new HashMap<String,Set<String>>());
+//							fs.addAll(preprocess(preCopy, pcCopy));
+//						}
 						
 						return fs;
 					}
@@ -272,6 +317,8 @@ public class Preprocessor {
 				}
 				
 				updateNameMapWithAssign(nameMap, oldLhsName, newLhsName, rhsName);
+			} else if (cp == Comparator.EQ) {
+				f.getPureFormula().updateAlias(ct);
 			}
 			
 		}
