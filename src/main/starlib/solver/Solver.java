@@ -36,6 +36,8 @@ import starlib.predicate.InductivePredMap;
 
 public class Solver {
 	
+	private static int count = 0;
+	
 	private static String s2sat = "s2sat";
 
 	private static boolean ret = false;
@@ -173,6 +175,7 @@ public class Solver {
 	
 	
 	public static boolean checkSat(List<Formula> fs) {
+//		System.out.println(fs);
 		for (Formula f : fs) {
 //			System.out.println(f);
 			if (checkSat(f)) {
@@ -195,6 +198,8 @@ public class Solver {
 		if (f.getDepth() > GlobalVariables.MAX_DEPTH) {
 			return false;
 		} else {
+			count++;
+			
 			// return true;
 			File file = printToFile(f);
 			
@@ -321,6 +326,10 @@ public class Solver {
 
 	public static String getModel() {
 		return model.toString();
+	}
+	
+	public static int getCount() {
+		return count;
 	}
 
 }
