@@ -44,44 +44,6 @@ public class Preprocessor {
 		f.getPureFormula().setAliasMap(new HashMap<String,Set<String>>());
 		List<Formula> result = preprocess(pre, pc, f);
 		
-//		Formula res = pre.copy();
-//		Formula fcopy = pc.copy();
-//		
-//		HeapFormula hf = fcopy.getHeapFormula();
-//		for (HeapTerm ht : hf.getHeapTerms()) {
-//			PointToTerm pt = (PointToTerm) ht;
-//			res.addPointToTerm(pt.getVars(), pt.getType());
-//		}
-//		
-//		PureFormula pf = fcopy.getPureFormula();
-//		for (PureTerm pt : pf.getPureTerms()) {
-//			ComparisonTerm ct = (ComparisonTerm) pt;
-//			res.addComparisonTerm(ct.getComparator(), ct.getExp1(), ct.getExp2());
-//		}
-		
-//		String s1 = "this_deletedNode := this_nullNode & this_root != this_nullNode & this_lastNode := this_root & x >= this_root.element & this_deletedNode := this_root & this_root.right != this_nullNode & this_lastNode := this_root.right & x < this_root.right.element & this_root.right.left = this_nullNode & this_root.right.left := this_root.right.left & this_root.right = this_lastNode & this_deletedNode != this_nullNode & x = this_deletedNode.element & this_deletedNode.element := this_root.right.element & this_root.right := this_root.right.right & this_root != this_lastNode & this_root.left.level >= (this_root.level - 1) & this_root.right.level < (this_root.level - 1)";
-//		
-//		String s = "this_deletedNode := this_nullNode & this_root != this_nullNode & this_lastNode := this_root & x < this_root.element & this_root.left != this_nullNode & this_lastNode := this_root.left & x >= this_root.left.element & this_deletedNode := this_root.left & this_root.left.right = this_nullNode & this_root.left.right := this_root.left.right & this_root.left = this_lastNode & this_deletedNode != this_nullNode & x = this_deletedNode.element & this_deletedNode.element := this_root.left.element & this_root.left := this_root.left.right & this_root != this_lastNode & this_root.left.level < (this_root.level - 1) & this_root.level := (this_root.level - 1) & this_root.right.level > this_root.level";
-//		
-//		if (f.toString().equals(s1)) {
-//			int i = 0;
-//			i++;
-//		}
-		
-//		res.getPureFormula().setAliasMap(new HashMap<String,Set<String>>());
-//		Utilities.reset();
-//		List<Formula> results = preprocess(res);
-		
-//		if (result.isEmpty()) {
-//			try {
-//				System.out.println(pc);
-//				throw new Exception("Empty");
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-		
 		return result;
 	}
 	
@@ -202,9 +164,34 @@ public class Preprocessor {
 		}
 	}
 	
+	private static void updateNoNullSet(Set<String> noNullSet, String oldName, String newName) {
+		Iterator<String> it = noNullSet.iterator();
+		boolean removed = false;
+		
+		while (it.hasNext()) {
+			String name = it.next();
+			if (name.equals(oldName)) {
+				it.remove();
+				removed = true;
+			}
+		}
+		
+		if (removed) noNullSet.add(newName);
+	}
+	
 	public static List<Formula> preprocess(Formula pre, Formula pc, Formula f) {
 		List<Formula> fs = new ArrayList<Formula>();		
 		Map<String,String> nameMap = new HashMap<String,String>();
+		Set<String> noNullSet = new HashSet<String>();
+		
+		HeapFormula hf = f.getHeapFormula();
+		
+		for (HeapTerm ht : hf.getHeapTerms()) {
+			if (ht instanceof PointToTerm) {
+				PointToTerm pt = (PointToTerm) ht;
+				noNullSet.add(pt.getRoot().getName());
+			}
+		}
 		
 		PureFormula pf = f.getPureFormula();
 		
@@ -228,6 +215,9 @@ public class Preprocessor {
 				if (varNameSplit.length <= 1) var.setName(rootName);
 				
 				for (int i = 1; i < varNameSplit.length; i++) {
+					// should handle the case rootName points to null first
+					if (Utilities.isNull(f, rootName)) return fs;
+					
 					HeapTerm ht = Utilities.findHeapTermNoRoot(f, rootName);
 					
 					if (ht == null) {
@@ -237,7 +227,7 @@ public class Preprocessor {
 						String oldName = rootName + "." + varNameSplit[i];
 						
 						String field = varNameSplit[i];
-							
+
 						if (nameMap.containsKey(oldName)) {
 							newName = nameMap.get(oldName);
 						} else {
@@ -251,6 +241,8 @@ public class Preprocessor {
 						// update alias here
 						updateAliasMapWithRename(f.getAliasMap(), oldName, newName);
 						updateNameMapWithRename(f.getAlias(rootName), nameMap, rootName, field, newName);
+						
+						updateNoNullSet(noNullSet, oldName, newName);
 						
 						rootName = newName;
 						
@@ -318,7 +310,38 @@ public class Preprocessor {
 				
 				updateNameMapWithAssign(nameMap, oldLhsName, newLhsName, rhsName);
 			} else if (cp == Comparator.EQ) {
+				String lhs = ct.getExp1().toString();
+				String rhs = ct.getExp2().toString();
+				
 				f.getPureFormula().updateAlias(ct);
+				
+				Set<String> aliasLhs = f.getAlias(lhs);
+				Set<String> aliasRhs = f.getAlias(rhs);
+				
+				if (aliasLhs != null && aliasRhs != null) {
+					if (aliasLhs.contains("null")) {
+						for (String alias : aliasRhs) {
+							if (noNullSet.contains(alias))
+								return fs;
+						}
+					} else if (aliasRhs.contains("null")) {
+						for (String alias : aliasLhs) {
+							if (noNullSet.contains(alias))
+								return fs;
+						}
+					}
+				}
+			} else if (cp == Comparator.NE) {
+				String lhs = ct.getExp1().toString();
+				String rhs = ct.getExp2().toString();
+				
+				Set<String> alias = f.getAlias(lhs);
+				if (alias != null && alias.contains(rhs))
+					return fs;
+				
+				if (rhs.equals("null")) {
+					noNullSet.add(lhs);
+				}
 			}
 			
 		}
