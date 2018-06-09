@@ -285,7 +285,17 @@ public class Preprocessor {
 				}
 			}
 			
-			if (cp == Comparator.ARF || cp == Comparator.ARV) {
+			if (cp == Comparator.APV) {
+				Variable lhs = (Variable) ct.getExp1();
+				String oldLhsName = lhs.toString();
+				
+				Variable tmp = new Variable(oldLhsName);
+				String newLhsName = Utilities.freshVar(tmp).getName();
+				
+				lhs.setName(newLhsName);
+								
+				nameMap.put(oldLhsName, newLhsName);
+			} else if (cp == Comparator.ARF || cp == Comparator.ARV) {
 				Variable lhs = (Variable) ct.getExp1();
 				String oldLhsName = lhs.toString();
 				
