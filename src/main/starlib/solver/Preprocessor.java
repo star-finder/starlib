@@ -285,7 +285,7 @@ public class Preprocessor {
 				}
 			}
 			
-			if (cp == Comparator.AF || cp == Comparator.AS) {
+			if (cp == Comparator.ARF || cp == Comparator.ARV) {
 				Variable lhs = (Variable) ct.getExp1();
 				String oldLhsName = lhs.toString();
 				
@@ -303,7 +303,7 @@ public class Preprocessor {
 				lhs.setName(newLhsName);
 				
 				String rhsName = null;
-				if (cp == Comparator.AF) {
+				if (cp == Comparator.ARF) {
 					rhsName = ct.getExp2().toString();
 					updateAliasMapWithAssign(f.getAliasMap(), oldLhsName, newLhsName, rhsName);
 				}

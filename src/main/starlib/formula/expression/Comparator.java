@@ -45,8 +45,9 @@ public enum Comparator {
    LE(" <= ") { public Comparator not() { return GT; }},
    GT(" > ")  { public Comparator not() { return LE; }},
    GE(" >= ") { public Comparator not() { return LT; }},
-   AS(" := ") { public Comparator not() { return AS; }},
-   AF(" := ") { public Comparator not() { return AF; }};
+   APV(" := ") { public Comparator not() { return APV; }}, // assign prim var
+   ARV(" := ") { public Comparator not() { return ARV; }}, // assign ref var
+   ARF(" := ") { public Comparator not() { return ARF; }}; // assign ref field
 
    private final String str;
 
@@ -62,7 +63,7 @@ public enum Comparator {
    }
    
    public String toS2SATString() {
-	 if (this == AS || this == AF) return " = ";
+	 if (this == APV || this == ARV || this == ARF) return " = ";
 	 return str;
    }
 

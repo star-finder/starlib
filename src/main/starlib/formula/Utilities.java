@@ -34,6 +34,10 @@ public class Utilities {
 //		return false;
 //	}
 	
+	public static int freshIndex() {
+		return count++;
+	}
+	
 	// may have problem, but may be it is enough with Java name convention
 	public static Variable freshVar(Variable oldVar) {
 		String oldName = oldVar.getName();
