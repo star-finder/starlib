@@ -10,6 +10,8 @@ public class Utilities {
 	
 	private static int count = 1;
 	
+	private static int address = 1000;
+	
 	public static int find(Variable[] vars, Variable var) {
 		int length = vars.length;
 		
@@ -36,6 +38,22 @@ public class Utilities {
 	
 	public static int freshIndex() {
 		return count++;
+	}
+	
+	public static int freshAddress() {
+		return address++;
+	}
+	
+	public static void resetAddress() {
+		address = 1000;
+	}
+	
+	public static int getIndex() {
+		return count;
+	}
+	
+	public static void setIndex(int c) {
+		count = c;
 	}
 	
 	// may have problem, but may be it is enough with Java name convention
