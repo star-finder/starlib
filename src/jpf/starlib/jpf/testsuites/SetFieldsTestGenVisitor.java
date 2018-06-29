@@ -14,7 +14,7 @@ public class SetFieldsTestGenVisitor extends TestGenVisitor {
 	@Override
 	public void visit(PointToTerm term) {
 		Variable[] vars = term.getVars();
-		if(finalVars.contains(vars[0].getName())) {
+		if(vars[0].getName().startsWith("newNode_") || finalVars.contains(vars[0].getName())) {
 			return;
 		}
 		

@@ -16,6 +16,7 @@ public class Model {
 	
 	public Model(String model) {
 		model = model.replaceAll("FLOAT 0.", "0");
+		model = model.replaceAll("FLOAT", "");
 		String[] tmp = model.split(";");
 		
 		model = tmp[0];
@@ -27,7 +28,7 @@ public class Model {
 		} else {
 			pure = "";
 		}
-					
+
 		model = standardizeModel(model);
 		model = "pre temp == " + model;
 		
@@ -51,6 +52,8 @@ public class Model {
 	public String standardizeModel(String model) {
 		String ret = model;
 		
+		// replace mul operator to # to avoid conflict with star operator
+		ret = ret.replaceAll("\\*", "#");
 		ret = ret.substring(8, model.length());
 		ret = ret.replaceAll("[\\[\\]]", "");
 		

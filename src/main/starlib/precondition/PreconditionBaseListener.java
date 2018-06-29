@@ -221,6 +221,18 @@ public class PreconditionBaseListener implements PreconditionListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitTer(PreconditionParser.TerContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLit(PreconditionParser.LitContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLit(PreconditionParser.LitContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

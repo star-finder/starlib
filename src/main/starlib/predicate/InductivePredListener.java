@@ -195,4 +195,14 @@ public interface InductivePredListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTer(InductivePredParser.TerContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link InductivePredParser#lit}.
+	 * @param ctx the parse tree
+	 */
+	void enterLit(InductivePredParser.LitContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link InductivePredParser#lit}.
+	 * @param ctx the parse tree
+	 */
+	void exitLit(InductivePredParser.LitContext ctx);
 }

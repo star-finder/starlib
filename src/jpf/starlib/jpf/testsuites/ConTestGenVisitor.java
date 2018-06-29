@@ -18,6 +18,10 @@ public class ConTestGenVisitor extends TestGenVisitor {
 	@Override
 	public void visit(PointToTerm term) {
 		Variable var = term.getRoot();
+		
+		if (var.getName().startsWith("newNode_"))
+			return;
+		
 		if (!initVars.contains(var)) {
 			initVars.add(var);
 			test.append(makeDeclAndInitWithConstructor(var));

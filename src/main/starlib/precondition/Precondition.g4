@@ -259,20 +259,27 @@ exp returns [Expression e] :
 ;
 	
 ter returns [Expression e] :
-	var1=ID MUL var2=ID
+	ter1=ter MUL lit
 	{
-		Expression exp1 = new Variable($var1.text);
-		Expression exp2 = new Variable($var2.text);
+		Expression exp1 = $ter1.e;
+		Expression exp2 = $lit.e;
 		
 		$e = new BinaryExpression(Operator.MUL, exp1, exp2);
 	}
-	| var1=ID DIV var2=ID
+	| ter1=ter DIV lit
 	{
-		Expression exp1 = new Variable($var1.text);
-		Expression exp2 = new Variable($var2.text);
+		Expression exp1 = $ter1.e;
+		Expression exp2 = $lit.e;
 	
 		$e = new BinaryExpression(Operator.DIV, exp1, exp2);
 	}
+	| lit
+	{
+		$e = $lit.e;
+	}
+;
+	
+lit returns [Expression e] :
 	| ID
 	{
 		$e = new Variable($ID.text);
@@ -303,7 +310,7 @@ LE		: '<=' ;
 LT		: '<' ;
 PLUS	: '+' ;
 MINUS	: '-' ;
-MUL		: '**' ;
+MUL		: '#' ;
 DIV		: '/' ;
 LB      : '(' ;
 RB      : ')' ;
@@ -314,8 +321,8 @@ AND     : '&' ;
 PT      : '::' ;
 STAR    : '*' ;
 ID      : [a-zA-Z_][a-zA-Z0-9_]* ;
-INT		: '0'|[1-9][0-9]* ;
-DOUBLE	: INT'.'INT ;
+INT		: '0'|'-'?[1-9][0-9]* ;
+DOUBLE	: '-'?INT'.'INT ;
 WS      : [ \t\r\n]+ -> skip ;
 
 // tests

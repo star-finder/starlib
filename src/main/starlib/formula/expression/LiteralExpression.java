@@ -26,8 +26,12 @@ public class LiteralExpression extends Expression {
 		this.value = Long.toString(value);
 	}
 	
-	public LiteralExpression(double value) {
+	public LiteralExpression(double value) {		
 		this.value = Double.toString(value);
+		
+		if (this.value.endsWith(".0")) {
+			this.value = this.value.substring(0, this.value.length() - 2);
+		}
 	}
 	
 	public LiteralExpression(String value) {
@@ -35,8 +39,13 @@ public class LiteralExpression extends Expression {
 			this.value = "1";
 		else if (value.equals("false"))
 			this.value = "0";
-		else
+		else {
 			this.value = value;
+		
+			if (this.value.endsWith(".0")) {
+				this.value = this.value.substring(0, this.value.length() - 2);
+			}
+		}
 	}
 	
 	@Override

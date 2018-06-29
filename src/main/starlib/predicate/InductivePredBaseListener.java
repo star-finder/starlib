@@ -233,6 +233,18 @@ public class InductivePredBaseListener implements InductivePredListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitTer(InductivePredParser.TerContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLit(InductivePredParser.LitContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLit(InductivePredParser.LitContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

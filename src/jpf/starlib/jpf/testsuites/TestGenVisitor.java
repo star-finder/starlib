@@ -65,7 +65,7 @@ public class TestGenVisitor extends InitVarsVisitor {
 				if (var.isPrim()) {
 					String val = type.equals("boolean") ? "false" : "0";					
 					test.append(makeDeclAndInit(var,val));
-				} else {
+				} else if (!type.equals("void")){
 					test.append(makeDeclAndInit(var,"null"));
 				}
 			}

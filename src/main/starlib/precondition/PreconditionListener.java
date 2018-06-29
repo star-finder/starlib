@@ -185,4 +185,14 @@ public interface PreconditionListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTer(PreconditionParser.TerContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PreconditionParser#lit}.
+	 * @param ctx the parse tree
+	 */
+	void enterLit(PreconditionParser.LitContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PreconditionParser#lit}.
+	 * @param ctx the parse tree
+	 */
+	void exitLit(PreconditionParser.LitContext ctx);
 }
