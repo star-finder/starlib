@@ -403,4 +403,22 @@ public class Formula {
 		PureTerm term = new NEqTerm(var1, var2);
 		pureFormula.addTerm(term);
 	}
+	
+	// unfold with fix point
+	public Formula[] unfoldWithFixPoint() {
+		return new Formula[0];
+	}
+		
+	private void rele() {
+			
+	}
+		
+	private void abs() {
+			
+	}
+		
+	private void elim() {
+			
+	}
+		
 }

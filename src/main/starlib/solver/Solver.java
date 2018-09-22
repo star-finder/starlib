@@ -189,12 +189,29 @@ public class Solver {
 		return false;
 	}
 	
+	public static boolean checkSat(Formula f, boolean withDepth) {
+		if (withDepth) return checkSat(f);
+		
+		ret = false; model = new StringBuilder();
+		count++;
+			
+		// return true;
+		File file = printToFile(f);
+			
+		if (file != null) {
+			boolean ret = checkSat(file);
+			return ret;
+		}
+			
+		return false;
+	}
+	
 	public static boolean checkSat(Formula f) {
 //		System.out.println(f);
 //		System.out.println(f.getDepth());
 		
 		ret = false; model = new StringBuilder();
-
+		
 		if (f.getDepth() > GlobalVariables.MAX_DEPTH) {
 			return false;
 		} else {
