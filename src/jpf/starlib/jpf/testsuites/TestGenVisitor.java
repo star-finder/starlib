@@ -3,6 +3,7 @@ package starlib.jpf.testsuites;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import gov.nasa.jpf.vm.FieldInfo;
 import starlib.formula.Formula;
@@ -52,6 +53,22 @@ public class TestGenVisitor extends InitVarsVisitor {
 		}
 	}
 	
+	private String genRandomVal(String type) {
+		Random rand = new Random();
+		
+		if (type.equals("boolean")) {
+			double d = rand.nextDouble();
+			
+			if (d <= 0.5) return "false";
+			else return "true";
+		} else {
+			int min = 0;
+			int max = 10;
+			
+			return (min + rand.nextInt(max)) + "";
+		}
+	}
+	
 	private void genDefaultVars() {
 		if (knownTypeVars.size() == initVars.size())
 			return;
@@ -63,7 +80,8 @@ public class TestGenVisitor extends InitVarsVisitor {
 			Variable var = new Variable(name,type);				
 			if (!initVars.contains(var)) {
 				if (var.isPrim()) {
-					String val = type.equals("boolean") ? "false" : "0";					
+//					String val = type.equals("boolean") ? "false" : "0";
+					String val = genRandomVal(type);
 					test.append(makeDeclAndInit(var,val));
 				} else if (!type.equals("void")){
 					test.append(makeDeclAndInit(var,"null"));
