@@ -44,6 +44,8 @@ public class TestGenerator {
 	
 	public static void reset() {
 		first = true;
+		models = new HashSet<String>();
+		index = 1;
 	}
 	
 	public static void addModel(String model) {

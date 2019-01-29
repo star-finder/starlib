@@ -50,6 +50,10 @@ public class Solver {
 	
 	private static ExecutorService executor = Executors.newSingleThreadExecutor();
 	
+	public static void reset() {
+		count = 0;
+	}
+	
 	public static void terminate() {
 		executor.shutdown();
 		/*
@@ -222,6 +226,8 @@ public class Solver {
 			
 			if (file != null) {
 				boolean ret = checkSat(file);
+//				System.out.println(ret);
+				
 				return ret;
 			}
 			

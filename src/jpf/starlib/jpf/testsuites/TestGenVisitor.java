@@ -62,8 +62,8 @@ public class TestGenVisitor extends InitVarsVisitor {
 			if (d <= 0.5) return "false";
 			else return "true";
 		} else {
-			int min = 0;
-			int max = 10;
+			int min = -32;
+			int max = 64;
 			
 			return (min + rand.nextInt(max)) + "";
 		}
