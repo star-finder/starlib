@@ -16,16 +16,21 @@ import starlib.jpf.PathFinderUtils;
 public class TestGenVisitor extends InitVarsVisitor {
 	
 	protected StringBuffer test;
+	
+	protected boolean randomDefault;
 
 	public TestGenVisitor(HashMap<String,String> knownTypeVars, HashSet<Variable> initVars,
-			String objName, String clsName, FieldInfo[] insFields, FieldInfo[] staFields, StringBuffer test) {
+			String objName, String clsName, FieldInfo[] insFields, FieldInfo[] staFields,
+			boolean randomDefault, StringBuffer test) {
 		super(knownTypeVars, initVars, objName, clsName, insFields, staFields);
 		this.test = test;
+		this.randomDefault = randomDefault;
 	}
 	
 	public TestGenVisitor(TestGenVisitor that) {
 		super(that);
 		this.test = that.test;
+		this.randomDefault = that.randomDefault;
 	}
 
 	@Override
@@ -80,8 +85,10 @@ public class TestGenVisitor extends InitVarsVisitor {
 			Variable var = new Variable(name,type);				
 			if (!initVars.contains(var)) {
 				if (var.isPrim()) {
-//					String val = type.equals("boolean") ? "false" : "0";
-					String val = genRandomVal(type);
+					String val = "";
+					if (randomDefault) val = genRandomVal(type);
+					else val = type.equals("boolean") ? "false" : "0";
+					
 					test.append(makeDeclAndInit(var,val));
 				} else if (!type.equals("void")){
 					test.append(makeDeclAndInit(var,"null"));

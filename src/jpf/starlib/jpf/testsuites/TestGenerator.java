@@ -56,13 +56,13 @@ public class TestGenerator {
 		TestGenerator.models = models;
 	}
 	
-	public static void generateTests() {
+	public static void generateTests(boolean randomDefault) {
 		StringBuffer test = new StringBuffer();
 		init(test);
 		
 		for (String model : models) {
 	        Model m = new Model(model);
-			generateTest(m.getFormula(), test, m.getPure());
+			generateTest(m.getFormula(), test, m.getPure(), randomDefault);
 		}
 		
 		test.append("}\n");
@@ -71,7 +71,7 @@ public class TestGenerator {
 		PathFinderUtils.writeToFile(test,conf,ci,mi);
 	}
 	
-	private static void generateTest(Formula f, StringBuffer test, String pure) {
+	private static void generateTest(Formula f, StringBuffer test, String pure, boolean randomDefault) {
 		String objName = "obj";
 		String clsName = ci.getSimpleName();
 		
@@ -131,7 +131,8 @@ public class TestGenerator {
 			}
 		}
 		
-		TestGenVisitor jpfGen = new TestGenVisitor(knownTypeVars, initVars, objName, clsName, insFields, staFields, test);
+		TestGenVisitor jpfGen = new TestGenVisitor(knownTypeVars, initVars, objName, clsName,
+				insFields, staFields, randomDefault, test);
 		jpfGen.visit(f);
 		
 //		if (!mi.isStatic())
