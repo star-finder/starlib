@@ -1,6 +1,7 @@
 package starlib.formula;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +18,11 @@ public class Variable extends Expression{
 	private String type;
 	
 	private Set<Variable> lazyGetVars;
+
+	public static final String[] PRIMITIVE_TYPE_SET_VALUES = new String[] {
+        "boolean", "byte", "char", "double", "float", "int", "long", "short"
+	};
+	public static final Set<String> PRIMITIVE_TYPE_SET = new HashSet<String>(Arrays.asList(PRIMITIVE_TYPE_SET_VALUES));
 
 	public Variable(String name) {
 		this.name = name;
@@ -60,12 +66,7 @@ public class Variable extends Expression{
 	}
 	
 	public boolean isPrim() {
-		if (type.equals("boolean") || type.equals("byte") || type.equals("char") ||
-				type.equals("double") || type.equals("float") || type.equals("int") ||
-				type.equals("long") || type.equals("short"))
-			return true;
-		else
-			return false;
+		return PRIMITIVE_TYPE_SET.contains(type);
 	}
 	
 	
